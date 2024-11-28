@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ConfigService } from './services/firebase-post.service';
+import { CarAdsService } from './services/car-ads-service';
 
 @Component({
   selector: 'app-root',
@@ -9,19 +9,17 @@ import { ConfigService } from './services/firebase-post.service';
   styleUrl: './app.component.css',
   standalone : true
 })
-export class AppComponent  implements OnInit
-  {
+export class AppComponent  implements OnInit{
 
   carAds : any [] = [];
 
-  constructor(private http: ConfigService)
+  constructor(private http: CarAdsService)
   {}
   
   ngOnInit(): void {
     
     this.http.getCarAds();
   }
-
 
   title = 'MobileWorld';
 
