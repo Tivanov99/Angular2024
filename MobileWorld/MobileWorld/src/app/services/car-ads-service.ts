@@ -1,14 +1,24 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class CarAdsService {
-
-  constructor(private http: HttpClient) {
+  
+  constructor() {
+    initializeApp(firebaseConfig)
   }
 
-  getCarAds() : void{
-    this.http.get('https://mobileworld-18285-default-rtdb.firebaseio.com/car_ads.json')
-      .subscribe((res) => {console.log(res)});
+  getCarAds(){
+    const db = getFirestore();
+    const colRef = collection(db,'cars_ads');
+
+    getDocs(colRef)
+    .then( (snapshot) => {
+      snapshot.docs.forEach((doc) =>
+        console.log(doc.data())
+      )
+    });
   }
 }
