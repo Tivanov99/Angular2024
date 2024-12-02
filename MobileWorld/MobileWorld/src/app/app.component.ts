@@ -18,7 +18,7 @@ export class AppComponent  implements OnInit{
   
   ngOnInit(): void {
     
-    this.http.getCarAds();
+    this.http.getCarsAds();
   }
 
   title = 'MobileWorld';
