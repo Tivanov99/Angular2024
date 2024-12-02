@@ -9,5 +9,7 @@ import { NavBarComponent } from '../nav-bar/nav-bar.component';
   standalone : true
 })
 export class BasePageComponent {
-
+  constructor() {
+    
+  }
 }

@@ -8,11 +8,11 @@ import { BasePageComponent } from '../base-page/base-page.component';
   styleUrl: './home-page.component.css',
   standalone : true
 })
-export class HomePageComponent extends BasePageComponent {
+export class HomePageComponent  extends BasePageComponent{
 
   constructor() {
     super();
     
   }
-  
+
 }
