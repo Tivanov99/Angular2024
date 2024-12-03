@@ -1,0 +1,8 @@
+<div class="drop-down-control">
+    <p class="drop-down-control-header">{{ dropDownTitle }}</p>
+    <select  (change)="onSelectedItem($event)" class="form-control" tabindex="-1">
+        @for (item of dropDownItems; track item) {
+            <option id="{{ item.itemID }}">{{ item.name }}</option>
+        }
+    </select>
+</div>
