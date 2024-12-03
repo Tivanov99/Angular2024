@@ -1,3 +1,46 @@
 <app-base-page>
 </app-base-page>
-<p>this is a home page</p>
+
+<div class="col-md-3 col-sm-12 classic-filter-row sidebar-sm-mg-bt ">
+    <form action="https://cars.silverstar.bg/obyavi/" method="get" data-trigger="filter">
+        <div class="filter filter-sidebar ajax-filter">
+            <div class="sidebar-entry-header"> 
+                <i class="stm-icon-car_search">
+                </i> 
+                <span class="h4">Търсене</span>
+            </div>
+
+            <div class="col-md-12 col-sm-6 stm-filter_body">
+                <div class="form-group">
+                    <select name="body" class="form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                        <option value="" selected="selected"> Вид каросерия</option>
+                    </select>
+                    <span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" style="width: 100%;">
+                        <span class="selection">
+                            <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-body-qr-container">
+                            </span>
+                            <span class="select2-selection__rendered" id="select2-body-qr-container" title=" Вид каросерия"> Вид каросерия</span>
+                            <span class="select2-selection__arrow" role="presentation"></span>
+                            <b role="presentation">
+                            </b>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="hidden" id="stm_view_type" name="view_type" value=""> 
+            <input type="hidden" id="stm-filter-links-input" name="stm_filter_link" value=""> 
+            <input type="hidden" name="popular" value=""> 
+            <input type="hidden" name="s" value=""> 
+            <input type="hidden" name="sort_order" value="">
+            <div class="sidebar-action-units"> 
+                <input id="stm-classic-filter-submit" class="hidden" type="submit" value="Покажи колите"> 
+                <a href="https://cars.silverstar.bg/obyavi/" class="button">
+                    <span>Изчисти</span>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="stm-inventory-sidebar"></div>
