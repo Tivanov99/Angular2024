@@ -24,11 +24,11 @@ export class FilterComponent {
 
     this.carBrandItems.push({
       name : "BMW",
-      itemID : 1
+      itemID : "1"
     },
     {
       name : "Аudi",
-      itemID : 2
+      itemID : "2"
     })
 
   }
@@ -36,11 +36,11 @@ export class FilterComponent {
   loadCarModels(){
     this.carBrandModelsItems.push({
       name : "A7",
-      itemID : 3
+      itemID : "3"
     },
     {
       name : "RS7",
-      itemID : 4
+      itemID : "4"
     })
   }
 

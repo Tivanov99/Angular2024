@@ -9,3 +9,28 @@
 .drop-down-control-header{
     margin-bottom: 8px;
 }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+}
+  
+.custom-dropdown:hover .dropdown-menu {
+    display: block;
+}
+  
+.dropdown-menu label {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.dropdown-checkbox-container-text{
+    text-align: left;
+}
