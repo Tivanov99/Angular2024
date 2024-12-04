@@ -1,38 +1,26 @@
-<div class="col-md-3 col-sm-12 classic-filter-row">
-    <form action="" method="get" data-trigger="filter">
-        <div class="filter filter-sidebar">
-            <div> 
-                <span class="h4">Търсене</span>
-            </div>
+<div class="image-container">
+    <img src="assets/title-box-default-bg.jpg" alt="Background" class="full-width-image">
+    <div class="container">
+        <div class="col-md-3 classic-filter-row overlay">
+            <form action="" method="get" data-trigger="filter">
+                <div class="filter filter-sidebar">
 
-            <app-drop-down [dropDownTitle] = "'Марка'" [dropDownItems] = "carBrandItems">
-            </app-drop-down>
-
-            <app-drop-down [dropDownTitle] = "'Модел'" [dropDownItems] = "carBrandModelsItems">
-            </app-drop-down>
-            
-            <!-- <div class="drop-down-control">
-                <p class="drop-down-control-header">Вид каросерия</p>
-                <select class="form-control" tabindex="-1">
-                    <option value="" selected="selected"> Вид каросерия</option>
-                </select>
-            </div> -->
-        </div>
-
+                    <span class="h4">Търсене</span>
+                    
+                    <app-drop-down [dropDownTitle] = "'Марка'" [dropDownItems] = "carBrandItems">
+                    </app-drop-down>
         
-        <div>
-            <input type="hidden" id="stm_view_type" name="view_type" value=""> 
-            <input type="hidden" id="stm-filter-links-input" name="stm_filter_link" value=""> 
-            <input type="hidden" name="popular" value=""> 
-            <input type="hidden" name="s" value=""> 
-            <input type="hidden" name="sort_order" value="">
-            <div class="sidebar-action-units"> 
-                <input id="stm-classic-filter-submit" class="hidden" type="submit" value="Покажи колите"> 
-                <a href="" class="button">
-                    <span>Изчисти</span>
-                </a>
-            </div>
+                    <app-drop-down [dropDownTitle] = "'Модел'" [dropDownItems] = "carBrandModelsItems">
+                    </app-drop-down>
+                </div>
+                
+                <div class="sidebar-action-units"> 
+                    <input class="filter-search-button" type="submit" value="Покажи колите"> 
+                    <a href="" class="button">
+                        <span>Изчисти</span>
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
-<div class="stm-inventory-sidebar"></div>

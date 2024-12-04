@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { DropDownModel } from '../app/models/drop-down-model';
+import { DropDownModel } from '../../app/models/drop-down-model';
 
 @Component({
   selector: 'app-drop-down',

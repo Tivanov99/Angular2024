@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BasePageComponent } from '../base-page/base-page.component';
-import { DropDownComponent } from '../../drop-down/drop-down.component';
-import { DropDownModel } from '../models/drop-down-model';
+import { DropDownComponent } from '../drop-down/drop-down.component';
 import { FilterComponent } from '../filter/filter.component';
 
 @Component({

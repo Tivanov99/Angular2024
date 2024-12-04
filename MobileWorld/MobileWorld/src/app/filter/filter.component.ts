@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DropDownComponent } from '../../drop-down/drop-down.component';
+import { DropDownComponent } from '../drop-down/drop-down.component';
 import { DropDownModel } from '../models/drop-down-model';
 
 @Component({
