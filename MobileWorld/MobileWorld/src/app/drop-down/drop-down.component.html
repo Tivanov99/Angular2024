@@ -1,19 +1,17 @@
 <div class="drop-down-control">
-    <p class="drop-down-control-header">{{ dropDownTitle }}</p>
-    @if(!useCheckBoxes){
+    <p class="drop-down-control-header">{{ this.contextData.getDropDownTitle() }}</p>
+    @if(!this.contextData.getUseCheckBoxesFlag()){
         <select  (change)="onSelectedItem($event)" class="form-control" tabindex="-1">
-            @for (item of dropDownItems; track item) {
-                @if(!useCheckBoxes){
-                    <option id="{{ item.itemID }}">{{ item.name }}</option>
-                }
+            @for (item of contextData.getInputData(); track item) {
+                <option id="{{ item.itemID }}">{{ item.name }}</option>
             }
         </select>
     }
     @else{
         <div class="custom-dropdown">
-            <button class="form-control dropdown-checkbox-container-text">{{ dropDownTitle }}</button>
+            <button class="form-control dropdown-checkbox-container-text">{{ this.contextData.getDropDownTitle() }}</button>
             <div class="dropdown-menu">
-                @for (item of dropDownItems; track item) {
+                @for (item of contextData.getInputData(); track item) {
                     <label>
                         <input (change)="onCheckClicked($event)" type="checkbox" value="{{ item.itemID }}"> {{ item.name }}
                     </label>

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DropDownModel } from '../../app/models/drop-down-model';
+import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
 
 @Component({
   selector: 'app-drop-down',
@@ -10,12 +11,8 @@ import { DropDownModel } from '../../app/models/drop-down-model';
 })
 export class DropDownComponent {
 
-  @Input() useCheckBoxes: boolean = false;
-  @Input() dropDownTitle: string = "";
-  @Input() dropDownItems : DropDownModel[] = [];
+  @Input() contextData: DropDownContextData = new DropDownContextData();
 
-  private _selectedItemID : string = "";
-  private _checkedItemsIDs : string [] = [];
   constructor() {
     
   }
@@ -25,19 +22,26 @@ export class DropDownComponent {
     const selectElement = event.target as HTMLSelectElement;
     const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-    this._selectedItemID = selectedOption.id;
+    const contextInputData = this.contextData.getInputData();
+
+    const selectedItem : DropDownModel = contextInputData.find(i => i.itemID === selectedOption.id)!;
+    
+    this.contextData.setSelectedData(selectedItem)
   }
 
   onCheckClicked(event: Event) : void{
 
-    const inputElement = event.target as HTMLInputElement;
+    let inputElement = event.target as HTMLInputElement;
 
+    const contextInputData = this.contextData.getInputData();
+
+    const checkedElement : DropDownModel = contextInputData.find(i=>i.itemID === inputElement.value)!;
+    
     if(inputElement.checked){
-      this._checkedItemsIDs.push(inputElement.value!);
+      this.contextData.addSelectedDataItem(checkedElement);
     }
     else{
-      const index = this._checkedItemsIDs.indexOf(inputElement.value!);
-      this._checkedItemsIDs.splice(index,1);
+      this.contextData.deleteSelectedDataItem(checkedElement.itemID!);
     }
   }
 }
