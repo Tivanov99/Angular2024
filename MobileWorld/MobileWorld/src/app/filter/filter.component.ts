@@ -39,8 +39,13 @@ export class FilterComponent{
   }
 
   onSearchButtonClick(){
-    console.log('търсене');
+
     this.searchEvent.emit();
+
+    console.log(this.pageModel.carBrandContextData.getSelectedData());
+    console.log(this.pageModel.carModelsContextData.getSelectedDataItems());
+
+    console.log('търсене');
   }
 
 }
@@ -55,7 +60,7 @@ class PageModel {
   }
 
   loadData(): void {
-    
+
     this.carBrandContextData.setDropDownTitle('Марка')
     this.carBrandContextData.setInputData (this.loadCarBrand());
 
@@ -64,7 +69,6 @@ class PageModel {
     this.carModelsContextData.setUseCheckBoxesFlag(true);
 
   }
-
 
   loadCarBrand() : DropDownModel []{
     return [

@@ -66,7 +66,8 @@ export class DropDownContextData{
 
     deleteSelectedDataItem(itemID : string) : void{
         const currentItem : DropDownModel = this._contextDataItems.find(i=>i.itemID === itemID)!;
+       
         const itemIndex = this._contextDataItems.indexOf(currentItem);
-        this._contextDataItems.slice(itemIndex, 1);
+        this._contextDataItems.splice(itemIndex, 1);
     }
 }
