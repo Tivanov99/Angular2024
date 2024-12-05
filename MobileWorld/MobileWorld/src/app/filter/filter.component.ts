@@ -13,7 +13,10 @@ export class FilterComponent {
 
   public carBrandItems : DropDownModel[] = [];
   public carBrandModelsItems : DropDownModel[] = [];
-  
+  public carFuelType : DropDownModel[] = [];
+  public carGearType : DropDownModel[] = [];
+  public extras : DropDownModel[] = [];
+
   @Output() searchEvent = new EventEmitter<void>();
 
   constructor() {

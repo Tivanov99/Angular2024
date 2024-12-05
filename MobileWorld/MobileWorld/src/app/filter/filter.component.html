@@ -5,11 +5,24 @@
             <form action="" method="get" data-trigger="filter">
                 <div class="filter filter-sidebar">
                     <span class="h4">Търсене</span>
+
                     <app-drop-down [dropDownTitle] = "'Марка'" [dropDownItems] = "carBrandItems">
                     </app-drop-down>
+
                     <app-drop-down [dropDownTitle] = "'Модел'" [dropDownItems] = "carBrandModelsItems"
                         [useCheckBoxes] = "true">
                     </app-drop-down>
+
+                    <app-drop-down [dropDownTitle] = "'Тип гориво'" [dropDownItems] = "carFuelType">
+                    </app-drop-down>
+
+                    <app-drop-down [dropDownTitle] = "'Тип скоростна кутия'" [dropDownItems] = "carGearType">
+                    </app-drop-down>
+
+                    <app-drop-down [dropDownTitle] = "'Екстри'" [dropDownItems] = "extras"
+                        [useCheckBoxes] = "true">
+                    </app-drop-down>
+
                 </div>
                 <div class="sidebar-action-units"> 
                     <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите"> 
