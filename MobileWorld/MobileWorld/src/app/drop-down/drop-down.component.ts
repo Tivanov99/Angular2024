@@ -39,7 +39,5 @@ export class DropDownComponent {
       const index = this._checkedItemsIDs.indexOf(inputElement.value!);
       this._checkedItemsIDs.splice(index,1);
     }
-    
   }
-
 }

@@ -4,21 +4,17 @@
         <div class="col-md-3 classic-filter-row overlay">
             <form action="" method="get" data-trigger="filter">
                 <div class="filter filter-sidebar">
-
                     <span class="h4">Търсене</span>
-                    
                     <app-drop-down [dropDownTitle] = "'Марка'" [dropDownItems] = "carBrandItems">
                     </app-drop-down>
-        
                     <app-drop-down [dropDownTitle] = "'Модел'" [dropDownItems] = "carBrandModelsItems"
                         [useCheckBoxes] = "true">
                     </app-drop-down>
                 </div>
-                
                 <div class="sidebar-action-units"> 
-                    <input class="filter-search-button" type="submit" value="Покажи колите"> 
+                    <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите"> 
                     <a href="" class="button">
-                        <span>Изчисти</span>
+                        <input type="button" value="Изчисти"> 
                     </a>
                 </div>
             </form>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { DropDownModel } from '../models/drop-down-model';
 
@@ -14,6 +14,8 @@ export class FilterComponent {
   public carBrandItems : DropDownModel[] = [];
   public carBrandModelsItems : DropDownModel[] = [];
   
+  @Output() searchEvent = new EventEmitter<void>();
+
   constructor() {
     
     this.loadCarBrand();
@@ -50,6 +52,16 @@ export class FilterComponent {
 
   loadTransmissionTypes(){
     
+  }
+
+  onClearButtonClick(){
+    console.log('чистим');
+    
+  }
+
+  onSearchButtonClick(){
+    console.log('търсене');
+    this.searchEvent.emit();
   }
 
 }
