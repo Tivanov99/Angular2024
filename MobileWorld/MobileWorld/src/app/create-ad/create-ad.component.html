@@ -1,1 +1,29 @@
-<p>create-ad works!</p>
+<div class="component-header">
+    <div class="text-center">
+        <h4>Добавяне на обява</h4>
+    </div>
+    <div class="container text-start form-border">
+        <form action="" method="post">
+            <div class="row">
+                <div class="col">
+                    <app-drop-down [contextData] = "pageModel.carBrandContextData">
+                    </app-drop-down>
+                </div>
+                <div class="col">
+                    <app-drop-down [contextData] = "pageModel.carModelsContextData">
+                    </app-drop-down>
+                </div>
+                <div class="col">
+                    <app-drop-down [contextData] = "pageModel.carBrandContextData">
+                    </app-drop-down>
+                </div>
+                <div class="col">
+                    <app-drop-down [contextData] = "pageModel.carModelsContextData">
+                    </app-drop-down>
+                </div>
+            </div>
+    
+            <input (click) = "onCreateButtonClick()" class="create-ad-button" type="button" value="Създаване на обява"> 
+        </form>
+    </div>
+</div>

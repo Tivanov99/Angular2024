@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AdComponent } from './ad/ad.component';
 import { ForumComponent } from './forum/forum.component';
+import { CreateAdComponent } from './create-ad/create-ad.component';
 
 export const routes: Routes = [
     {path : '', redirectTo: '/home', pathMatch: 'full'}, 
@@ -12,4 +13,5 @@ export const routes: Routes = [
     {path: 'login', component : LoginComponent},
     {path: 'ads', component : AdComponent},
     {path: 'forum', component : ForumComponent},
+    {path: 'create-ad', component : CreateAdComponent},
 ];
