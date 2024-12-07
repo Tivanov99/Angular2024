@@ -1,4 +1,5 @@
 export class AdModel{
+    adID! : string;
     header! : string;
     price! : string;
     engineCbs! : string;

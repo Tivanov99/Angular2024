@@ -24,19 +24,33 @@ export class HomeComponent {
   }
 
   getLatestAds(){
-    let adModel : AdModel = new AdModel();
-    adModel.header = 'Ауди RS6';
-    adModel.price = '99.999';
-    adModel.engineCbs = '3998';
-    adModel.distance = '79.000KM'
-    adModel.year = '2018';
-    adModel.fuelType = 'бензин';
-    adModel.gearType = 'Автоматична'
-    adModel.coupeType =  'ФастБек';
-    adModel.region = 'Бургас';
-    adModel.dateCreated = '08.12.2024'
+    let firstAdModel : AdModel = new AdModel();
+    firstAdModel.header = 'Ауди RS6';
+    firstAdModel.price = '99.999';
+    firstAdModel.engineCbs = '3998';
+    firstAdModel.distance = '79.000KM'
+    firstAdModel.year = '2018';
+    firstAdModel.fuelType = 'бензин';
+    firstAdModel.gearType = 'Автоматична'
+    firstAdModel.coupeType =  'ФастБек';
+    firstAdModel.region = 'Бургас';
+    firstAdModel.dateCreated = '08.12.2024'
 
-    this.latestAds.push(adModel);
+    this.latestAds.push(firstAdModel);
+
+    let secondAdModel : AdModel = new AdModel();
+    secondAdModel.header = 'BMW M5';
+    secondAdModel.price = '19.999';
+    secondAdModel.engineCbs = '4998';
+    secondAdModel.distance = '19.000KM'
+    secondAdModel.year = '2009';
+    secondAdModel.fuelType = 'бензин';
+    secondAdModel.gearType = 'Автоматична'
+    secondAdModel.coupeType =  'Седан';
+    secondAdModel.region = 'Варна';
+    secondAdModel.dateCreated = '08.11.2024'
+
+    this.latestAds.push(secondAdModel);
   }
 
 }
