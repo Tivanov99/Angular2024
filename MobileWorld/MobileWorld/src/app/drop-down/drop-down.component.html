@@ -3,7 +3,7 @@
     @if(!this.contextData.getUseCheckBoxesFlag()){
         <select  (change)="onSelectedItem($event)" class="form-control" tabindex="-1">
             @for (item of contextData.getInputData(); track item) {
-                <option id="{{ item.itemID }}">{{ item.name }}</option>
+                <option onselect = "onSelectItemFunc(item.itemID)" id="{{ item.itemID }}">{{ item.name }}</option>
             }
         </select>
     }

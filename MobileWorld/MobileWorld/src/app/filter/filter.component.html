@@ -3,7 +3,7 @@
         <div class="filter filter-sidebar">
             <span class="h4">Търсене</span>
 
-            <app-drop-down [contextData] = "pageModel.carBrandContextData">
+            <app-drop-down (onSelectItem) = "onSelectItem($event)" [contextData] = "pageModel.carBrandContextData">
             </app-drop-down>
 
             <app-drop-down [contextData] = "pageModel.carModelsContextData">

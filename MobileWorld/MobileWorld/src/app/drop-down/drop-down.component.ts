@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DropDownModel } from '../../app/models/drop-down-model';
 import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
 
@@ -12,6 +12,7 @@ import { DropDownContextData } from '../context-data-objects/drop-down-context-d
 export class DropDownComponent {
 
   @Input() contextData: DropDownContextData = new DropDownContextData();
+  @Output() onSelectItem = new EventEmitter<string>();
 
   constructor() {
     
@@ -27,6 +28,8 @@ export class DropDownComponent {
     const selectedItem : DropDownModel = contextInputData.find(i => i.itemID === selectedOption.id)!;
     
     this.contextData.setSelectedData(selectedItem)
+
+    this.onSelectItem.emit(selectedItem.itemID);
   }
 
   onCheckClicked(event: Event) : void{
@@ -44,4 +47,5 @@ export class DropDownComponent {
       this.contextData.deleteSelectedDataItem(checkedElement.itemID!);
     }
   }
+
 }

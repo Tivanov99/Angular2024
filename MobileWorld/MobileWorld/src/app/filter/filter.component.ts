@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { DropDownModel } from '../models/drop-down-model';
 import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
+import { CarAdsService } from '../services/car-ads-service';
 
 @Component({
   selector: 'app-filter',
@@ -12,17 +13,12 @@ import { DropDownContextData } from '../context-data-objects/drop-down-context-d
 })
 export class FilterComponent{
 
-  public carBrandItems : DropDownModel[] = [];
-  public carBrandModelsItems : DropDownModel[] = [];
-  public carFuelType : DropDownModel[] = [];
-  public carGearType : DropDownModel[] = [];
-  public extras : DropDownModel[] = [];
-  public pageModel = new PageModel();
+  public pageModel! : PageModel;
 
   @Output() searchEvent = new EventEmitter<void>();
 
-  constructor() {
-    
+  constructor(private carAdsService : CarAdsService) {
+    this.pageModel = new PageModel(this.carAdsService)
   }
 
   loadFuelTypes(){
@@ -48,6 +44,11 @@ export class FilterComponent{
     console.log('търсене');
   }
 
+  async onSelectItem(itemID : string){
+    await this.pageModel.carModelsContextData.setInputData (
+       await this.carAdsService.loadCarModelsAsDropDownModel(itemID) );
+  } 
+
 }
 
 class PageModel {
@@ -55,45 +56,16 @@ class PageModel {
   public carModelsContextData: DropDownContextData = new DropDownContextData();
   public carBrandContextData: DropDownContextData = new DropDownContextData();
 
-  constructor() {
+  constructor(private carAdsService : CarAdsService) {
     this.loadData();
   }
 
-  loadData(): void {
+  async loadData(): Promise<void> {
 
-    this.carBrandContextData.setDropDownTitle('Марка')
-    this.carBrandContextData.setInputData (this.loadCarBrand());
+    this.carBrandContextData.setDropDownTitle('Марка');
+    this.carBrandContextData.setInputData (await this.carAdsService.loadCarBrand());
 
-    this.carModelsContextData.setDropDownTitle('Модел')
-    this.carModelsContextData.setInputData (this.loadCarModels());
+    this.carModelsContextData.setDropDownTitle('Модел');
     this.carModelsContextData.setUseCheckBoxesFlag(true);
-
   }
-
-  loadCarBrand() : DropDownModel []{
-    return [
-      {
-        name : "BMW",
-        itemID : "1"
-      },
-      {
-        name : "Аudi",
-        itemID : "2"
-      }
-    ]
-  }
-
-  loadCarModels() : DropDownModel [] {
-    return [
-      {
-        name : "A7",
-        itemID : "3"
-      },
-      {
-        name : "RS7",
-        itemID : "4"
-      }
-    ];
-  }
-
 }
