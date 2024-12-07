@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AdModel } from '../models/ad-model';
 
 @Component({
   selector: 'ad',
@@ -10,6 +11,8 @@ import { RouterLink } from '@angular/router';
 })
 export class AdComponent {
 
+  @Input() adModel : AdModel = new AdModel();
+  
   constructor() {
   }
 

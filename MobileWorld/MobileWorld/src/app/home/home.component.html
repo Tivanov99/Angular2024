@@ -2,7 +2,12 @@
     <div class="d-flex justify-content-center component-header">
         <h4>Най-новите обяви</h4>
     </div>
+
     <app-filter (searchEvent)="filterSearchButton()"></app-filter>
-    <ad></ad>
+
+    @for (adItem of latestAds; track adItem) {
+        <ad [adModel] = "adItem"></ad>
+    }
+
 </div>
 <router-outlet></router-outlet>    
