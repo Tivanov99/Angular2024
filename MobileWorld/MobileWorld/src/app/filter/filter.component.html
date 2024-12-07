@@ -1,35 +1,30 @@
-<div class="image-container">
-    <img src="assets/title-box-default-bg.jpg" alt="Background" class="full-width-image">
-    <div class="container">
-        <div class="col-md-3 classic-filter-row overlay">
-            <form action="" method="get" data-trigger="filter">
-                <div class="filter filter-sidebar">
-                    <span class="h4">Търсене</span>
+<div class="col-md-2 classic-filter-row overlay">
+    <form action="" method="get" data-trigger="filter">
+        <div class="filter filter-sidebar">
+            <span class="h4">Търсене</span>
 
-                    <app-drop-down [contextData] = "pageModel.carBrandContextData">
-                    </app-drop-down>
+            <app-drop-down [contextData] = "pageModel.carBrandContextData">
+            </app-drop-down>
 
-                    <app-drop-down [contextData] = "pageModel.carModelsContextData">
-                    </app-drop-down>
+            <app-drop-down [contextData] = "pageModel.carModelsContextData">
+            </app-drop-down>
 
-                    <!-- <app-drop-down [dropDownTitle] = "'Тип гориво'" [contextData] = "carFuelType">
-                    </app-drop-down>
+            <!-- <app-drop-down [dropDownTitle] = "'Тип гориво'" [contextData] = "carFuelType">
+            </app-drop-down>
 
-                    <app-drop-down [dropDownTitle] = "'Тип скоростна кутия'" [contextData] = "carGearType">
-                    </app-drop-down>
+            <app-drop-down [dropDownTitle] = "'Тип скоростна кутия'" [contextData] = "carGearType">
+            </app-drop-down>
 
-                    <app-drop-down [dropDownTitle] = "'Екстри'" [contextData] = "extras"
+            <app-drop-down [dropDownTitle] = "'Екстри'" [contextData] = "extras"
                         [useCheckBoxes] = "true">
-                    </app-drop-down> -->
+            </app-drop-down> -->
 
-                </div>
-                <div class="sidebar-action-units"> 
-                    <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите"> 
-                    <a href="" class="button">
-                        <input type="button" value="Изчисти"> 
-                    </a>
-                </div>
-            </form>
         </div>
-    </div>
+        <div class="sidebar-action-units"> 
+            <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите"> 
+            <a href="" class="button">
+                <input type="button" value="Изчисти"> 
+            </a>
+        </div>
+    </form>
 </div>

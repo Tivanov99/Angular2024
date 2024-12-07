@@ -13,12 +13,6 @@
     margin-right: 10px;
 }
 
-.image-container {
-  position: relative; /* Родителският елемент трябва да има position: relative */
-  display: inline-block; /* За да се адаптира спрямо съдържанието */
-  width: 100%; /* Опционално: адаптирайте според нуждите */
-  max-width: 1000px; /* Примерна ширина, може да се променя */
-}
 
 .background-image {
   width: 100%; /* Изображението покрива целия контейнер */
@@ -29,9 +23,15 @@
 }
 
 .overlay {
+  transform: translate(0, -30%); 
   position: absolute; /* Абсолютно позициониране спрямо родителския контейнер */
-  top: 50%; /* Центриране по вертикала */
   background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачен черен фон */
   padding: 15px; /* Отстояние вътре в overlay */
   border-radius: 8px; /* Закръглени ъгли */
 }
+
+/* .parent::after {
+  content: '';
+  display: block;
+  height: calc(50% + 100px); 
+} */

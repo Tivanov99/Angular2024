@@ -4,7 +4,8 @@ import { Component } from '@angular/core';
   selector: 'forum',
   imports: [],
   templateUrl: './forum.component.html',
-  styleUrl: './forum.component.css'
+  styleUrl: './forum.component.css',
+  standalone: true
 })
 export class ForumComponent {
 
