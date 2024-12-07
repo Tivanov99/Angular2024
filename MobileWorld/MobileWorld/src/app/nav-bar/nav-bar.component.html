@@ -5,8 +5,8 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/home">Начало</a>
           </li>
-          <li class="nav-item" (click) = "this.onAllAddsClick()">
-              <a class="nav-link">Всички обяви</a>
+          <li class="nav-item">
+              <a class="nav-link" routerLink="/ads">Всички обяви</a>
           </li>
           @if(this._sessionManagerService.hasActiveSession()){
             <li class="nav-item">
