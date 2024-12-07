@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { SessionManagerService } from '../services/session-manager-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [],
+  imports: [RouterLink],
   standalone: true,
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css',
