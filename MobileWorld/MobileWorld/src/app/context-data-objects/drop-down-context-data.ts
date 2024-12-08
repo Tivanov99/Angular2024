@@ -7,6 +7,7 @@ export class DropDownContextData{
     private _dropDownItems : DropDownModel[] = [];
     private _useCheckBoxes: boolean = false;
     private _dropDownTitle: string = "";
+    private _enableControl : boolean = true;
 
     constructor(){
 
@@ -69,5 +70,13 @@ export class DropDownContextData{
        
         const itemIndex = this._contextDataItems.indexOf(currentItem);
         this._contextDataItems.splice(itemIndex, 1);
+    }
+
+    setEnableControl(enable : boolean){
+        this._enableControl = enable;
+    }
+
+    getEnableControl() : boolean{
+        return  this._enableControl;
     }
 }

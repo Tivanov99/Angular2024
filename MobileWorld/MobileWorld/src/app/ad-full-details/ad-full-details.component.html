@@ -1,0 +1,74 @@
+<div class="component-header">
+    <div class="text-center">
+        <h4 value="title"></h4>
+    </div>
+    @if(showOwnerButtons()){
+        <div class="container d-flex justify-content-end">
+            <input (click) = "onEditButtonClick()"  class="btn btn-warning me-2" type="button" value="Редактирай"> 
+            <input (click) = "onCreateButtonClick()" class="btn btn-danger" type="button" value="Изтрий"> 
+            @if(isInEditMode()){
+                <input (click) = "onCancelClick()" class="btn btn-secondary ms-2" type="button" value="Отказ"> 
+            }
+        </div>
+    }
+    <div class="container text-start form-border">
+        <form action="" method="post">
+            <fieldset [disabled]="!enableControls()">
+                <div class="row">
+                    <div class="col">
+                        <app-drop-down (onSelectItem) = "onCarBrandSelectItem($event)" [contextData] = "pageModel.firstSectionFields.carBrandContextData">
+                        </app-drop-down>
+                    </div>
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.firstSectionFields.carModelsContextData">
+                        </app-drop-down>
+                    </div>
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.firstSectionFields.carGearTypeContextData">
+                        </app-drop-down>
+                    </div>
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.firstSectionFields.carFuelTypeContextData">
+                        </app-drop-down>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <input-field [contextData] = "pageModel.secondSectionFields.carDistanceContextData"></input-field>
+                    </div>
+                    <div class="col">
+                        <input-field [contextData] = "pageModel.secondSectionFields.carYearContextData"></input-field>
+                    </div>
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.secondSectionFields.regionContextData">
+                        </app-drop-down>
+                    </div>
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.secondSectionFields.euroStandardContextData">
+                        </app-drop-down>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col">
+                        <input-field [contextData] = "pageModel.thirdSectionFields.carPrice"></input-field>
+                    </div>
+    
+                    <div class="col">
+                        <app-drop-down [contextData] = "pageModel.thirdSectionFields.carPriceCurrency">
+                        </app-drop-down>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                </div>
+            </fieldset>
+            @if(isInCreateMode()){
+                <input (click) = "onCreateButtonClick()" class="create-ad-button btn btn-primary" type="button" value="Създаване на обява"> 
+            }
+            @else if(isInEditMode()){ 
+                <input (click) = "onSaveChangesButton()" class="save-changes-button btn btn-success" type="button" value="Запази промените"> 
+            }
+        </form>
+    </div>
+</div>

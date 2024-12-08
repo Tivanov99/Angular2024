@@ -8,7 +8,7 @@
     <!-- <app-filter (searchEvent)="filterSearchButton($event)"></app-filter> -->
 
     @for (adItem of latestAds; track adItem) {
-        <ad [adModel] = "adItem"></ad>
+        <ad-short-details [adModel] = "adItem"></ad-short-details>
     }
 
 </div>

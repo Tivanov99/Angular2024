@@ -1,9 +1,10 @@
 <div class="drop-down-control">
     <p class="drop-down-control-header">{{ this.contextData.getDropDownTitle() }}</p>
     @if(!this.contextData.getUseCheckBoxesFlag()){
-        <select  (change)="onSelectedItem($event)" class="form-control" tabindex="-1">
+        <select [disabled]="!this.contextData.getEnableControl()"  (change)="onSelectedItem($event)" class="form-control" tabindex="-1" required>
+            <option value="" disabled selected>Изберете опция</option>
             @for (item of contextData.getInputData(); track item) {
-                <option onselect = "onSelectItemFunc(item.itemID)" id="{{ item.itemID }}">{{ item.name }}</option>
+                <option id="{{ item.itemID }}">{{ item.name }}</option>
             }
         </select>
     }
@@ -12,10 +13,11 @@
             <div class="form-control dropdown-checkbox-container-text">
                 {{ this.contextData.getDropDownTitle() }}
             </div>
+
             <div class="dropdown-menu">
                 @for (item of contextData.getInputData(); track item) {
                     <label>
-                        <input class="no-click" (change)="onCheckClicked($event)" type="checkbox" value="{{ item.itemID }}"> {{ item.name }}
+                        <input (change)="onCheckClicked($event)" type="checkbox" value="{{ item.itemID }}"> {{ item.name }}
                     </label>
                 }
             </div>

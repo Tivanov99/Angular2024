@@ -7,6 +7,9 @@ import { CarModels } from "../models/car-model";
 import { DropDownModel } from "../models/drop-down-model";
 import { FuelTypeModel } from "../models/fuel-type-model";
 import { GearTypeModel } from "../models/gear-type-model";
+import { RegionModel } from "../models/region-model";
+import { EuroStandardModel } from "../models/euro-standard-model";
+import { CurrencyModel } from "../models/currency-model";
 
 @Injectable({providedIn: 'root'})
 export class CarAdsService {
@@ -114,6 +117,60 @@ export class CarAdsService {
     let fuelTypesAsDropDownData : DropDownModel[] = new Array();
 
     await this.getRecords<GearTypeModel>('gear_types').then(data =>{
+
+      data.forEach(item=>{
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = item.itemID;
+        dropDownModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
+  async loadRegionsAsDropDownModel() : Promise<DropDownModel[]>{
+
+    let fuelTypesAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<RegionModel>('region').then(data =>{
+
+      data.forEach(item=>{
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = item.itemID;
+        dropDownModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
+  async loadEuroStandardsAsDropDownModel() : Promise<DropDownModel[]>{
+
+    let fuelTypesAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<EuroStandardModel>('euroStandard').then(data =>{
+
+      data.forEach(item=>{
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = item.itemID;
+        dropDownModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
+  async loadCurrencysAsDropDownModel() : Promise<DropDownModel[]>{
+
+    let fuelTypesAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<CurrencyModel>('currency').then(data =>{
 
       data.forEach(item=>{
         let dropDownModel : DropDownModel = new DropDownModel();

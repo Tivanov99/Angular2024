@@ -3,13 +3,13 @@ import { RouterLink } from '@angular/router';
 import { AdModel } from '../models/ad-model';
 
 @Component({
-  selector: 'ad',
+  selector: 'ad-short-details',
   imports: [RouterLink],
-  templateUrl: './ad.component.html',
-  styleUrl: './ad.component.css',
+  templateUrl: './ad-short-details.component.html',
+  styleUrl: './ad-short-details.component.css',
   standalone : true
 })
-export class AdComponent {
+export class AdShortDetailsComponent {
 
   @Input() adModel : AdModel = new AdModel();
   

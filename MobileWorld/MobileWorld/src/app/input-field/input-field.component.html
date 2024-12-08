@@ -1,0 +1,4 @@
+<div class="input-control">
+    <p class="input-control-header">{{ this.contextData.getInputFielTitle() }}</p>
+        <input class="form-control" [type]="contextData.getInputFieldType()" (blur)="onBlur($event)" placeholder="Въведете текст">
+</div>
