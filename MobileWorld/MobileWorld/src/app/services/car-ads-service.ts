@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { getFirestore, collection, getDocs, Firestore, DocumentData } from 'firebase/firestore';
+import { getFirestore,addDoc, collection, getDocs, Firestore, DocumentData } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../environments/environment";
 import { CarBrand } from "../models/car-brands";
@@ -10,6 +10,8 @@ import { GearTypeModel } from "../models/gear-type-model";
 import { RegionModel } from "../models/region-model";
 import { EuroStandardModel } from "../models/euro-standard-model";
 import { CurrencyModel } from "../models/currency-model";
+import { AdFullDetailsModel } from "../models/ad-full-details-model";
+
 
 @Injectable({providedIn: 'root'})
 export class CarAdsService {
@@ -34,6 +36,51 @@ export class CarAdsService {
   getLatestAds(){
 
   }
+
+  async createAd(newCarAd : AdFullDetailsModel){
+    console.log('createAd');
+    console.log(newCarAd);
+
+    try{
+      let db : Firestore = getFirestore();
+
+      const docRef = await addDoc(collection(db, 'cars_ads'), {
+        customerCreatorID : newCarAd.customerCreatorID,
+        carModelID : newCarAd.carModelID,
+        carBrandID : newCarAd.carBrandID,
+        carGearID : newCarAd.carGearID,
+        carFuelTypeID : newCarAd.carFuelTypeID,
+        carDistanceID : newCarAd.carDistanceID,
+        carYear : newCarAd.carYear,
+        regionID : newCarAd.regionID,
+        euroStandardID : newCarAd.euroStandardID,
+        carPrice : newCarAd.carPrice,
+        carPriceCurrencyID : newCarAd.carPriceCurrencyID,
+        registerDataTime : newCarAd.registerDataTime,
+      });
+  }
+  catch (error){
+    console.error("Грешка при добавяне на данните:", error);
+    throw error;
+  }
+
+    
+    // await this.addRecord<AdFullDetailsModel>('cars_ads',newCarAd).then();
+  }
+
+  // private async addRecord<RecodType>(collectionName : string, newRecord : RecodType){
+  //   try{
+  //       let db : Firestore = getFirestore();
+
+  //       const docRef = await addDoc(collection(db, collectionName), {
+  //         customerCreatorID : newRecord.customerCreatorID
+  //       });
+  //   }
+  //   catch (error){
+  //     console.error("Грешка при добавяне на данните:", error);
+  //     throw error;
+  //   }
+  // }
 
   private async getRecords<RecodType>(collectionName : string) : Promise<RecodType[]>{
     try{
@@ -183,5 +230,4 @@ export class CarAdsService {
 
     return fuelTypesAsDropDownData;
   }
-
 }

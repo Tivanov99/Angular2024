@@ -6,6 +6,7 @@ import { InputFieldComponent } from '../input-field/input-field.component';
 import { InputContextData, InputFieldType } from '../context-data-objects/input-context-data';
 import { Router } from '@angular/router';
 import { RoutePaths } from '../app.routes';
+import { AdFullDetailsModel } from '../models/ad-full-details-model';
 
 @Component({
   selector: 'ad-full-details',
@@ -23,10 +24,10 @@ export class AdFullDetailsComponent implements OnInit{
 
   private _currentUrl: string = '';
 
-  constructor(private carAdsService : CarAdsService
+  constructor(private _carAdsService : CarAdsService
     ,private _router: Router) {
 
-    this.pageModel = new PageModel(this.carAdsService);
+    this.pageModel = new PageModel(this._carAdsService);
     this.loadData();
     this.currentUserAreOwnerOfThisAd();
   }
@@ -56,14 +57,31 @@ export class AdFullDetailsComponent implements OnInit{
     this.pageModel.loadData();
   }
 
-  onCreateButtonClick(){
-    console.log("da");
-    console.log(this.pageModel.firstSectionFields.carBrandContextData.getSelectedData());
+  async onCreateButtonClick(){
+
+    let adFullDetailsModel : AdFullDetailsModel = new AdFullDetailsModel();
+
+    adFullDetailsModel.customerCreatorID = "1";
+    adFullDetailsModel.carModelID = this.pageModel.firstSectionFields.carModelsContextData.getSelectedData().itemID;
+    adFullDetailsModel.carBrandID = this.pageModel.firstSectionFields.carBrandContextData.getSelectedData().itemID;
+    adFullDetailsModel.carGearID = this.pageModel.firstSectionFields.carGearTypeContextData.getSelectedData().itemID;
+    adFullDetailsModel.carFuelTypeID = this.pageModel.firstSectionFields.carFuelTypeContextData.getSelectedData().itemID;
+
+    adFullDetailsModel.carDistanceID = this.pageModel.secondSectionFields.carDistanceContextData.getInputData();
+    adFullDetailsModel.carYear = this.pageModel.secondSectionFields.carYearContextData.getInputData();
+    adFullDetailsModel.regionID = this.pageModel.secondSectionFields.regionContextData.getSelectedData().itemID;
+    adFullDetailsModel.euroStandardID = this.pageModel.secondSectionFields.euroStandardContextData.getSelectedData().itemID;
+
+    adFullDetailsModel.carPrice = this.pageModel.thirdSectionFields.carPrice.getInputData();
+    adFullDetailsModel.carPriceCurrencyID = this.pageModel.thirdSectionFields.carPriceCurrency.getSelectedData().itemID;
+    adFullDetailsModel.registerDataTime = new Date().toLocaleString("bg-BG");
+
+    await this._carAdsService.createAd(adFullDetailsModel);
   }
 
   async onCarBrandSelectItem(itemID : string){
     await this.pageModel.firstSectionFields.carModelsContextData.setInputData (
-       await this.carAdsService.loadCarModelsAsDropDownModel(itemID) );
+       await this._carAdsService.loadCarModelsAsDropDownModel(itemID) );
   } 
 
   currentUserAreOwnerOfThisAd() : boolean{
