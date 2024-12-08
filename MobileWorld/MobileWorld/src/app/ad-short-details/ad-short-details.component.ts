@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AdModel } from '../models/ad-model';
+import { AdShortDetailsModel } from '../models/ad-short-details-model';
 
 @Component({
   selector: 'ad-short-details',
@@ -11,7 +11,7 @@ import { AdModel } from '../models/ad-model';
 })
 export class AdShortDetailsComponent {
 
-  @Input() adModel : AdModel = new AdModel();
+  @Input() adFullDetailsModel : AdShortDetailsModel = new AdShortDetailsModel();
   
   constructor() {
   }

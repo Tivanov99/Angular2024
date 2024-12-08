@@ -52,15 +52,18 @@
     
                 <div class="row">
                     <div class="col">
-                        <input-field [contextData] = "pageModel.thirdSectionFields.carPrice"></input-field>
+                        <input-field [contextData] = "pageModel.thirdSectionFields.carPriceContextData"></input-field>
                     </div>
-    
                     <div class="col">
-                        <app-drop-down [contextData] = "pageModel.thirdSectionFields.carPriceCurrency">
+                        <app-drop-down [contextData] = "pageModel.thirdSectionFields.carPriceCurrencyContextData">
                         </app-drop-down>
                     </div>
-                    <div class="col"></div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <input-field [contextData] = "pageModel.thirdSectionFields.horsePowerContextData"></input-field>
+                    </div>
+                    <div class="col">
+                        <input-field [contextData] = "pageModel.thirdSectionFields.engineDisplacementContextData"></input-field>
+                    </div>
                 </div>
             </fieldset>
             @if(isInCreateMode()){

@@ -11,10 +11,10 @@
             <div class="content">
                 <div class="meta-top">
                     <div class="price">
-                        <span>{{adModel.price}}</span>
+                        <span>{{adFullDetailsModel.carPrice}} {{adFullDetailsModel.currencyType}}</span>
                     </div>
                     <div> 
-                        <a routerLink="/ad-" class="rmv_txt_drctn">{{adModel.header}}</a>
+                        <a routerLink="/ad-" class="rmv_txt_drctn">{{adFullDetailsModel.header}}</a>
                     </div>
                 </div>
             <div>
@@ -24,15 +24,15 @@
             <div class="row align-items-start">
                 <div class="col text-start">
                     <p class="feature-title">Пробег</p>
-                    <h5>{{adModel.distance}}</h5>
+                    <h5>{{adFullDetailsModel.carDistanceID}}</h5>
                 </div>
                 <div class="col text-start">
                     <p class="feature-title">Двигател</p>
-                    <h5>{{adModel.engineCbs}}</h5>
+                    <h5>{{adFullDetailsModel.engineDisplacement}}</h5>
                 </div>
                 <div class="col text-start">
                     <p class="feature-title">Година</p>
-                    <h5>{{adModel.year}}</h5>
+                    <h5>{{adFullDetailsModel.carYear}}</h5>
                 </div>
             </div>
         </div>
@@ -41,15 +41,15 @@
             <div class="row align-items-start">
                 <div class="col text-start">
                     <p class="feature-title">Тип гориво</p>
-                    <h5>{{adModel.fuelType}}</h5>
+                    <h5>{{adFullDetailsModel.carFuelName}}</h5>
                 </div>
                 <div class="col text-start">
                     <p class="feature-title">Тип скоростна кутия</p>
-                    <h5>{{adModel.gearType}}</h5>
-                </div>
+                    <h5>{{adFullDetailsModel.carGearTypeName}}</h5>
+                </div> 
                 <div class="col text-start">
-                    <p class="feature-title">Тип на купето</p>
-                    <h5>{{adModel.coupeType}}</h5>
+                    <p class="feature-title">Област</p>
+                    <h5>{{adFullDetailsModel.regionName}}</h5>
                 </div>
             </div>
         </div>
@@ -57,14 +57,8 @@
         <div class="container text-center">
             <div class="row align-items-start">
                 <div class="col text-start">
-                    <p class="feature-title">Област</p>
-                    <h5>{{adModel.region}}</h5>
-                </div>
-                <div class="col text-start">
-                    <p class="feature-title">Дата на пост</p>
-                    <h5>{{adModel.dateCreated}}</h5>
-                </div>
-                <div class="col text-start">
+                    <p class="feature-title">Дата на регистрация</p>
+                    <h5>{{adFullDetailsModel.registerDataTime}}</h5>
                 </div>
             </div>
         </div>

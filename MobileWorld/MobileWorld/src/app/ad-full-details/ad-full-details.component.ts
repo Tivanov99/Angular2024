@@ -72,8 +72,11 @@ export class AdFullDetailsComponent implements OnInit{
     adFullDetailsModel.regionID = this.pageModel.secondSectionFields.regionContextData.getSelectedData().itemID;
     adFullDetailsModel.euroStandardID = this.pageModel.secondSectionFields.euroStandardContextData.getSelectedData().itemID;
 
-    adFullDetailsModel.carPrice = this.pageModel.thirdSectionFields.carPrice.getInputData();
-    adFullDetailsModel.carPriceCurrencyID = this.pageModel.thirdSectionFields.carPriceCurrency.getSelectedData().itemID;
+    adFullDetailsModel.carPrice = this.pageModel.thirdSectionFields.carPriceContextData.getInputData();
+    adFullDetailsModel.carPriceCurrencyID = this.pageModel.thirdSectionFields.carPriceCurrencyContextData.getSelectedData().itemID;
+    adFullDetailsModel.horsePower = this.pageModel.thirdSectionFields.horsePowerContextData.getInputData();
+    adFullDetailsModel.engineDisplacement = this.pageModel.thirdSectionFields.engineDisplacementContextData.getInputData();
+    
     adFullDetailsModel.registerDataTime = new Date().toLocaleString("bg-BG");
 
     await this._carAdsService.createAd(adFullDetailsModel);
@@ -151,8 +154,10 @@ class SecondSectionFields{
 
 class ThirdSectionFields{
 
-  public carPrice: InputContextData = new InputContextData();
-  public carPriceCurrency: DropDownContextData = new DropDownContextData();
+  public carPriceContextData: InputContextData = new InputContextData();
+  public carPriceCurrencyContextData: DropDownContextData = new DropDownContextData();
+  public horsePowerContextData: InputContextData = new InputContextData();
+  public engineDisplacementContextData: InputContextData = new InputContextData();
   
   constructor() {
     
@@ -172,15 +177,15 @@ class PageModel {
 
   async loadFirstSectionData() : Promise<void> {
     this.firstSectionFields.carBrandContextData.setDropDownTitle('Марка');
-    this.firstSectionFields.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel());
+    this.firstSectionFields.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel().then());
 
     this.firstSectionFields.carModelsContextData.setDropDownTitle('Модел');
 
     this.firstSectionFields.carGearTypeContextData.setDropDownTitle('Тип скоростна кутия');
-    this.firstSectionFields.carGearTypeContextData.setInputData (await this.carAdsService.loadGearTypesAsDropDownModel());
+    this.firstSectionFields.carGearTypeContextData.setInputData (await this.carAdsService.loadGearTypesAsDropDownModel().then());
 
     this.firstSectionFields.carFuelTypeContextData.setDropDownTitle('Тип гориво');
-    this.firstSectionFields.carFuelTypeContextData.setInputData (await this.carAdsService.loadFuelTypesAsDropDownModel());
+    this.firstSectionFields.carFuelTypeContextData.setInputData (await this.carAdsService.loadFuelTypesAsDropDownModel().then());
   }
 
   async loadSecondSectionData() : Promise<void> {
@@ -191,18 +196,24 @@ class PageModel {
     this.secondSectionFields.carYearContextData.setInputFieldType(InputFieldType.Number)
 
     this.secondSectionFields.regionContextData.setDropDownTitle('Местоположение');
-    this.secondSectionFields.regionContextData.setInputData (await this.carAdsService.loadRegionsAsDropDownModel());
+    this.secondSectionFields.regionContextData.setInputData (await this.carAdsService.loadRegionsAsDropDownModel().then());
 
     this.secondSectionFields.euroStandardContextData.setDropDownTitle('Евростандарт');
-    this.secondSectionFields.euroStandardContextData.setInputData (await this.carAdsService.loadEuroStandardsAsDropDownModel());
+    this.secondSectionFields.euroStandardContextData.setInputData (await this.carAdsService.loadEuroStandardsAsDropDownModel().then());
   }
   
   async loadThirdSectionData() : Promise<void> {
-    this.thirdSectionFields.carPrice.setInputFielTitle('Цена');
-    this.thirdSectionFields.carPrice.setInputFieldType(InputFieldType.Number)
+    this.thirdSectionFields.carPriceContextData.setInputFielTitle('Цена');
+    this.thirdSectionFields.carPriceContextData.setInputFieldType(InputFieldType.Number)
 
-    this.thirdSectionFields.carPriceCurrency.setDropDownTitle('Валута');
-    this.thirdSectionFields.carPriceCurrency.setInputData (await this.carAdsService.loadCurrencysAsDropDownModel());
+    this.thirdSectionFields.carPriceCurrencyContextData.setDropDownTitle('Валута');
+    this.thirdSectionFields.carPriceCurrencyContextData.setInputData (await this.carAdsService.loadCurrencysAsDropDownModel().then());
+  
+    this.thirdSectionFields.horsePowerContextData.setInputFielTitle('Конски сили');
+    this.thirdSectionFields.horsePowerContextData.setInputFieldType(InputFieldType.Number)
+
+    this.thirdSectionFields.engineDisplacementContextData.setInputFielTitle('Кубатура на двигателя');
+    this.thirdSectionFields.engineDisplacementContextData.setInputFieldType(InputFieldType.Number)
   }
 
   async loadData(): Promise<void> {

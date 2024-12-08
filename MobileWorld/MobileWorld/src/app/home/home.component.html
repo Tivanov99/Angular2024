@@ -7,8 +7,8 @@
 
     <!-- <app-filter (searchEvent)="filterSearchButton($event)"></app-filter> -->
 
-    @for (adItem of latestAds; track adItem) {
-        <ad-short-details [adModel] = "adItem"></ad-short-details>
+    @for (adItem of getLatestAds(); track adItem) {
+        <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
     }
 
 </div>

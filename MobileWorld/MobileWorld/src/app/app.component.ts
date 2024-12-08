@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CarAdsService } from './services/car-ads-service';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { RouterOutlet } from '@angular/router';
 
@@ -10,18 +9,9 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css',
   standalone : true
 })
-export class AppComponent  implements OnInit{
+export class AppComponent {
 
-  carAds : any [] = [];
-
-  constructor(private http: CarAdsService)
+  constructor()
   {}
   
-  ngOnInit(): void {
-    
-    this.http.getCarsAds();
-  }
-
-  title = 'MobileWorld';
-
 }

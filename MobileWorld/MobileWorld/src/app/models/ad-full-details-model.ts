@@ -8,6 +8,8 @@ export class AdFullDetailsModel{
     carYear! : string;
     regionID! : string;
     euroStandardID! : string;
+    horsePower! : string;
+    engineDisplacement! : string;
     carPrice! : string;
     carPriceCurrencyID! : string;
     registerDataTime! : string;

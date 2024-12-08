@@ -11,6 +11,7 @@ import { RegionModel } from "../models/region-model";
 import { EuroStandardModel } from "../models/euro-standard-model";
 import { CurrencyModel } from "../models/currency-model";
 import { AdFullDetailsModel } from "../models/ad-full-details-model";
+import { AdShortDetailsModel } from "../models/ad-short-details-model";
 
 
 @Injectable({providedIn: 'root'})
@@ -23,24 +24,7 @@ export class CarAdsService {
     this.db = getFirestore();
   }
 
-  getCarsAds(){
-    const colRef = collection(this.db,'cars_ads');
-
-    getDocs(colRef).then( (snapshot) => {
-      snapshot.docs.forEach((doc) =>
-        console.log(doc.data())
-      )
-    });
-  }
-
-  getLatestAds(){
-
-  }
-
   async createAd(newCarAd : AdFullDetailsModel){
-    console.log('createAd');
-    console.log(newCarAd);
-
     try{
       let db : Firestore = getFirestore();
 
@@ -53,34 +37,19 @@ export class CarAdsService {
         carDistanceID : newCarAd.carDistanceID,
         carYear : newCarAd.carYear,
         regionID : newCarAd.regionID,
+        horsePower: newCarAd.horsePower,
+        engineDisplacement: newCarAd.engineDisplacement,
         euroStandardID : newCarAd.euroStandardID,
         carPrice : newCarAd.carPrice,
         carPriceCurrencyID : newCarAd.carPriceCurrencyID,
         registerDataTime : newCarAd.registerDataTime,
       });
+    }
+    catch (error){
+      console.error("Грешка при добавяне на данните:", error);
+      throw error;
+    }
   }
-  catch (error){
-    console.error("Грешка при добавяне на данните:", error);
-    throw error;
-  }
-
-    
-    // await this.addRecord<AdFullDetailsModel>('cars_ads',newCarAd).then();
-  }
-
-  // private async addRecord<RecodType>(collectionName : string, newRecord : RecodType){
-  //   try{
-  //       let db : Firestore = getFirestore();
-
-  //       const docRef = await addDoc(collection(db, collectionName), {
-  //         customerCreatorID : newRecord.customerCreatorID
-  //       });
-  //   }
-  //   catch (error){
-  //     console.error("Грешка при добавяне на данните:", error);
-  //     throw error;
-  //   }
-  // }
 
   private async getRecords<RecodType>(collectionName : string) : Promise<RecodType[]>{
     try{
@@ -100,6 +69,160 @@ export class CarAdsService {
         console.error("Грешка при добавяне на данните:", error);
         throw error;
     }
+  }
+
+  async loadLatestAds() : Promise<AdShortDetailsModel[]> {
+
+    const fuelTypes : FuelTypeModel[] = await this.loadFuelTypes().then();
+    const gearTypes : GearTypeModel[] = await this.loadGearTypes().then();
+    const regions : RegionModel[] = await this.loadRegions().then();
+    const carModels : CarModels[] = await this.loadCarModels().then();
+    const carBrands : CarBrand[] = await this.loadCarBrands().then();
+    const currencyes : CurrencyModel[] = await this.loadCurrency().then();
+
+    // console.log(fuelTypes);
+    // console.log(gearTypes);
+    // console.log(regions);
+    // console.log(carModels);
+    // console.log(carBrands);
+    
+    let latestAds : AdShortDetailsModel[] = new Array();
+
+    await this.getRecords<AdFullDetailsModel>('cars_ads').then(data =>{
+
+      data.forEach(adFullDetails=>{
+        let adShortDetails : AdShortDetailsModel = new AdShortDetailsModel();
+
+        const carBrand : string = carBrands.find(i=>i.itemID === adFullDetails.carBrandID)!.name;
+        const carModel : string = carModels.find(i=>i.modelID === adFullDetails.carModelID)!.modelName;
+
+        adShortDetails.header = `${carBrand} ${carModel}`;
+        adShortDetails.carPrice = adFullDetails.carPrice;
+        adShortDetails.engineDisplacement = adFullDetails.engineDisplacement;
+        adShortDetails.carDistanceID = adFullDetails.carDistanceID;
+        adShortDetails.carYear = adFullDetails.carYear;
+        adShortDetails.registerDataTime = adFullDetails.registerDataTime;
+        adShortDetails.carFuelName = fuelTypes.find(i=>i.itemID === adFullDetails.carFuelTypeID)!.name;
+        adShortDetails.carGearTypeName = gearTypes.find(i=>i.itemID === adFullDetails.carGearID)!.name;
+        adShortDetails.regionName = regions.find(i=>i.itemID === adFullDetails.regionID)!.name;
+        adShortDetails.currencyType = currencyes.find(i=>i.itemID === adFullDetails.carPriceCurrencyID)!.name;
+        latestAds.push(adShortDetails);
+      })
+    });
+
+    return latestAds;
+  }
+
+  private async loadCurrency() : Promise<CurrencyModel[]>{
+
+    let currencyes : CurrencyModel[] = new Array();
+
+    await this.getRecords<CurrencyModel>('currency').then(data =>{
+
+      data.forEach(item=>{
+        let carBrandModel : CurrencyModel = new CurrencyModel();
+        carBrandModel.itemID = item.itemID;
+        carBrandModel.name = item.name;
+
+        currencyes.push(carBrandModel);
+      })
+    });
+
+    return currencyes;
+  }
+
+  private async loadCarBrands() : Promise<CarBrand[]>{
+
+    let carBrandsData : CarBrand[] = new Array();
+
+    await this.getRecords<CarBrand>('cars_brands').then(data =>{
+
+      data.forEach(item=>{
+        let carBrandModel : CarBrand = new CarBrand();
+        carBrandModel.itemID = item.itemID;
+        carBrandModel.name = item.name;
+
+        carBrandsData.push(carBrandModel);
+      })
+    });
+
+    return carBrandsData;
+  }
+
+  private async loadCarModels() : Promise<CarModels[]>{
+
+    let carModels : CarModels[] = new Array();
+
+    await this.getRecords<CarModels>('cars_models').then(data =>{
+
+      data.forEach(item=>{
+        let documentData = item as DocumentData;
+
+        let carModel : CarModels = new CarModels();
+
+        carModel.modelID = documentData['id'];
+        carModel.carBrandID = item.carBrandID;
+        carModel.modelName = item.modelName;
+
+        carModels.push(carModel);
+      })
+    });
+
+    return carModels;
+  }
+
+  private async loadRegions() : Promise<RegionModel[]>{
+
+    let fuelTypesAsDropDownData : RegionModel[] = new Array();
+
+    await this.getRecords<RegionModel>('region').then(data =>{
+
+      data.forEach(item=>{
+        let regionModel : RegionModel = new RegionModel();
+        regionModel.itemID = item.itemID;
+        regionModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(regionModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
+  private async loadGearTypes() : Promise<GearTypeModel[]>{
+
+    let fuelTypesAsDropDownData : GearTypeModel[] = new Array();
+
+    await this.getRecords<GearTypeModel>('gear_types').then(data =>{
+
+      data.forEach(item=>{
+        let gearTypeModel : GearTypeModel = new GearTypeModel();
+        gearTypeModel.itemID = item.itemID;
+        gearTypeModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(gearTypeModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
+  private async loadFuelTypes() : Promise<FuelTypeModel[]>{
+
+    let fuelTypesAsDropDownData : FuelTypeModel[] = new Array();
+
+    await this.getRecords<FuelTypeModel>('fuel_types').then(data =>{
+
+      data.forEach(item=>{
+        let fuelTypeModel : FuelTypeModel = new FuelTypeModel();
+        fuelTypeModel.itemID = item.itemID;
+        fuelTypeModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(fuelTypeModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
   }
 
   async loadFuelTypesAsDropDownModel() : Promise<DropDownModel[]>{
