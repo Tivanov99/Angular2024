@@ -6,23 +6,25 @@
         <form action="" method="post">
             <div class="row">
                 <div class="col">
-                    <app-drop-down [contextData] = "pageModel.carBrandContextData">
+                    <app-drop-down (onSelectItem) = "onCarBrandSelectItem($event)" [contextData] = "pageModel.firstSectionFields.carBrandContextData">
                     </app-drop-down>
                 </div>
                 <div class="col">
-                    <app-drop-down [contextData] = "pageModel.carModelsContextData">
+                    <app-drop-down [contextData] = "pageModel.firstSectionFields.carModelsContextData">
                     </app-drop-down>
                 </div>
                 <div class="col">
-                    <app-drop-down [contextData] = "pageModel.carBrandContextData">
+                    <app-drop-down [contextData] = "pageModel.firstSectionFields.carGearTypeContextData">
                     </app-drop-down>
                 </div>
                 <div class="col">
-                    <app-drop-down [contextData] = "pageModel.carModelsContextData">
+                    <app-drop-down [contextData] = "pageModel.firstSectionFields.carFuelTypeContextData">
                     </app-drop-down>
                 </div>
             </div>
-    
+
+
+            
             <input (click) = "onCreateButtonClick()" class="create-ad-button" type="button" value="Създаване на обява"> 
         </form>
     </div>

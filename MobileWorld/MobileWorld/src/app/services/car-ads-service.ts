@@ -5,6 +5,8 @@ import { firebaseConfig } from "../../environments/environment";
 import { CarBrand } from "../models/car-brands";
 import { CarModels } from "../models/car-model";
 import { DropDownModel } from "../models/drop-down-model";
+import { FuelTypeModel } from "../models/fuel-type-model";
+import { GearTypeModel } from "../models/gear-type-model";
 
 @Injectable({providedIn: 'root'})
 export class CarAdsService {
@@ -30,16 +32,16 @@ export class CarAdsService {
 
   }
 
-  private async getCarsBrands() : Promise<CarBrand[]>{
+  private async getRecords<RecodType>(collectionName : string) : Promise<RecodType[]>{
     try{
 
       let db : Firestore = getFirestore();
-      const myCollection  = collection(db,'cars_brands');
+      const myCollection  = collection(db, collectionName);
   
       const querySnapshot = await getDocs(myCollection );
-      const data: CarBrand[] = querySnapshot.docs.map(doc => ({
+      const data: RecodType[] = querySnapshot.docs.map(doc => ({
         id: doc.id, // ID на документа в Firestore.
-        ...doc.data() as CarBrand // Преобразувайте данните към вашия интерфейс.
+        ...doc.data() as RecodType // Преобразувайте данните към вашия интерфейс.
       }));
   
       return data;
@@ -50,31 +52,29 @@ export class CarAdsService {
     }
   }
 
-  private async getCarsModels() : Promise<CarModels[]>{
-    try{
+  async loadFuelTypesAsDropDownModel() : Promise<DropDownModel[]>{
 
-      let db : Firestore = getFirestore();
-      const myCollection  = collection(db,'cars_models');
-  
-      const querySnapshot = await getDocs(myCollection );
-      const data: CarModels[] = querySnapshot.docs.map(doc => ({
-        id: doc.id, // ID на документа в Firestore.
-        ...doc.data() as CarModels // Преобразувайте данните към вашия интерфейс.
-      }));
-  
-      return data;
-    }
-    catch (error){
-        console.error("Грешка при добавяне на данните:", error);
-        throw error;
-    }
+    let fuelTypesAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<FuelTypeModel>('fuel_types').then(data =>{
+
+      data.forEach(item=>{
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = item.itemID;
+        dropDownModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
   }
 
   async loadCarBrandAsDropDownModel() : Promise<DropDownModel[]>{
 
     let carBrandsAsDropDownData : DropDownModel[] = new Array();
 
-    await this.getCarsBrands().then(data =>{
+    await this.getRecords<CarBrand>('cars_brands').then(data =>{
 
       data.forEach(item=>{
         let dropDownModel : DropDownModel = new DropDownModel();
@@ -90,12 +90,9 @@ export class CarAdsService {
 
   async loadCarModelsAsDropDownModel(carBrandID : string) :Promise<DropDownModel[]> {
     
-    console.log('loadCarModelsAsDropDownModel');
-    console.log(carBrandID);
-    
     let carBrandsAsDropDownData : DropDownModel[] = new Array();
 
-    await this.getCarsModels().then(data =>{
+    await this.getRecords<CarModels>('cars_models').then(data =>{
       data.forEach(item=>{
         
         let documentData = item as DocumentData;
@@ -111,5 +108,23 @@ export class CarAdsService {
 
     return carBrandsAsDropDownData;
   }
-  
+
+  async loadGearTypesAsDropDownModel() : Promise<DropDownModel[]>{
+
+    let fuelTypesAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<GearTypeModel>('gear_types').then(data =>{
+
+      data.forEach(item=>{
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = item.itemID;
+        dropDownModel.name = item.name;
+
+        fuelTypesAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return fuelTypesAsDropDownData;
+  }
+
 }

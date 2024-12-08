@@ -3,11 +3,11 @@ import { RouterModule } from '@angular/router';
 import { FilterComponent } from '../filter/filter.component';
 import { AdComponent } from '../ad/ad.component';
 import { AdModel } from '../models/ad-model';
-import { SearchFilterModel } from '../models/search-filter-model';
+import { CounterComponent } from '../counter/counter.component';
 
 @Component({
   selector: 'home',
-  imports: [RouterModule, FilterComponent, AdComponent],
+  imports: [FilterComponent, AdComponent, CounterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   standalone : true

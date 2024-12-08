@@ -5,6 +5,9 @@ import { DropDownContextData } from '../context-data-objects/drop-down-context-d
 import { CarAdsService } from '../services/car-ads-service';
 import { SearchFilterModel } from '../models/search-filter-model';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Clear, Search } from './filter-reducer';
 
 @Component({
   selector: 'app-filter',
@@ -15,12 +18,16 @@ import { RouterModule } from '@angular/router';
 })
 export class FilterComponent{
 
+  filter$ = new Observable<SearchFilterModel>();
+
   public pageModel! : PageModel;
 
   // @Output() searchEvent = new EventEmitter<SearchFilterModel>();
 
-  constructor(private carAdsService : CarAdsService) {
-    this.pageModel = new PageModel(this.carAdsService)
+  constructor(private carAdsService : CarAdsService,
+    private store: Store<{filter : SearchFilterModel}> ) {
+      this.filter$ = this.store.select('filter');
+      this.pageModel = new PageModel(this.carAdsService)
   }
 
   loadFuelTypes(){
@@ -33,14 +40,17 @@ export class FilterComponent{
 
   onClearButtonClick(){
     console.log('чистим');
+    this.store.dispatch(new Clear());
     
   }
 
   onSearchButtonClick(){
 
-    let searchFilterModel : SearchFilterModel = new SearchFilterModel();
-    searchFilterModel.carBrand = this.pageModel.carBrandContextData.getSelectedData();
-    searchFilterModel.carsModels = this.pageModel.carModelsContextData.getSelectedDataItems();
+    this.store.dispatch(new Search());
+    console.log(this.filter$);
+    // let searchFilterModel : SearchFilterModel = new SearchFilterModel();
+    // searchFilterModel.carBrand = this.pageModel.carBrandContextData.getSelectedData();
+    // searchFilterModel.carsModels = this.pageModel.carModelsContextData.getSelectedDataItems();
 
     // this.searchEvent.emit(searchFilterModel);
 

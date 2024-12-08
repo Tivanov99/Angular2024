@@ -3,6 +3,7 @@ import { AdModel } from '../models/ad-model';
 import { AdComponent } from '../ad/ad.component';
 import { RouterModule } from '@angular/router';
 import { FilterComponent } from '../filter/filter.component';
+import { CarAdsService } from '../services/car-ads-service';
 
 @Component({
   selector: 'app-ads',
@@ -15,11 +16,14 @@ export class AdsComponent {
 
   public ads : AdModel[] = new Array();
 
-  constructor() {
+  constructor(private carAdsService : CarAdsService) {
     this.getAds();
   }
 
   getAds(){
+
+    // this.carAdsService.getCarsAds();
+    
     let firstAdModel : AdModel = new AdModel();
     firstAdModel.header = 'Ауди RS6';
     firstAdModel.price = '99.999';

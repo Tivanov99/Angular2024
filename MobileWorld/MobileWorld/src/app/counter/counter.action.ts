@@ -1,3 +1,14 @@
+import {createAction} from "@ngrx/store"
+
+export const INCREMENT = "[Counter] Increment";
+export const DECREMENT = "[Counter] Decrement";
+export const RESET = "[Counter] Reset";
+
+export const increment = createAction(INCREMENT);
+export const decrement = createAction(DECREMENT);
+export const reset = createAction(RESET);
+
+//----------
 export class UserData{
     customerID! : string;
     hasCustomerSesion! : boolean;
@@ -21,13 +32,4 @@ const initialState: AppState = {
 const EVENT_1 = "EVENT_1";
 const EVENT_2 = "EVENT_2";
 
-const reducer = (state : AppState, action: any) =>{
-    switch (action) {
-        case EVENT_1:
-            return {...state, userData: action.value}
-        case EVENT_2:
-            return {...state, searchFilterData: action.value}
-        default:
-            return state;
-    }
-}
+

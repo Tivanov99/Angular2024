@@ -1,6 +1,6 @@
 import { DropDownModel } from "./drop-down-model";
 
-export class SearchFilterModel{
-    carBrand! : DropDownModel;
-    carsModels! : DropDownModel[];
+export interface SearchFilterModel{
+    carBrand : DropDownModel;
+    carsModels : DropDownModel[];
 }

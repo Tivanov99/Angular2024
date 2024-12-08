@@ -34,3 +34,7 @@
 .dropdown-checkbox-container-text{
     text-align: left;
 }
+
+.no-click {
+    pointer-events: none; /* Деактивира всички интеракции, включително кликове */
+  }

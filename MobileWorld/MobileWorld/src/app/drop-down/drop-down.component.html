@@ -9,11 +9,13 @@
     }
     @else{
         <div class="custom-dropdown">
-            <button class="form-control dropdown-checkbox-container-text">{{ this.contextData.getDropDownTitle() }}</button>
+            <div class="form-control dropdown-checkbox-container-text">
+                {{ this.contextData.getDropDownTitle() }}
+            </div>
             <div class="dropdown-menu">
                 @for (item of contextData.getInputData(); track item) {
                     <label>
-                        <input (change)="onCheckClicked($event)" type="checkbox" value="{{ item.itemID }}"> {{ item.name }}
+                        <input class="no-click" (change)="onCheckClicked($event)" type="checkbox" value="{{ item.itemID }}"> {{ item.name }}
                     </label>
                 }
             </div>
