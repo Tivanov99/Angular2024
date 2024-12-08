@@ -1,33 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { FilterComponent } from '../filter/filter.component';
-import { AdComponent } from '../ad/ad.component';
 import { AdModel } from '../models/ad-model';
-import { SearchFilterModel } from '../models/search-filter-model';
+import { AdComponent } from '../ad/ad.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'home',
-  imports: [RouterModule, FilterComponent, AdComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  selector: 'app-ads',
+  imports: [AdComponent, RouterModule],
+  templateUrl: './ads.component.html',
+  styleUrl: './ads.component.css',
   standalone : true
 })
-export class HomeComponent {
+export class AdsComponent {
 
-  public latestAds : AdModel[] = new Array();
+  public ads : AdModel[] = new Array();
 
   constructor() {
-    this.getLatestAds();
+    this.getAds();
   }
 
-  // filterSearchButton(searchFilterModel : SearchFilterModel){
-
-  //   console.log('search emit from patent')
-  //   console.log(searchFilterModel);
-
-  // }
-
-  getLatestAds(){
+  getAds(){
     let firstAdModel : AdModel = new AdModel();
     firstAdModel.header = 'Ауди RS6';
     firstAdModel.price = '99.999';
@@ -40,7 +31,7 @@ export class HomeComponent {
     firstAdModel.region = 'Бургас';
     firstAdModel.dateCreated = '08.12.2024'
 
-    this.latestAds.push(firstAdModel);
+    this.ads.push(firstAdModel);
 
     let secondAdModel : AdModel = new AdModel();
     secondAdModel.header = 'BMW M5';
@@ -54,7 +45,6 @@ export class HomeComponent {
     secondAdModel.region = 'Варна';
     secondAdModel.dateCreated = '08.11.2024'
 
-    this.latestAds.push(secondAdModel);
+    this.ads.push(secondAdModel);
   }
-
 }

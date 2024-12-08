@@ -1,0 +1,8 @@
+<div class="box">
+
+    @for (adItem of ads; track adItem) {
+        <ad [adModel] = "adItem"></ad>
+    }
+
+</div>
+<router-outlet></router-outlet>    

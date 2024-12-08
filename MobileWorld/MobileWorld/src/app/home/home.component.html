@@ -3,7 +3,9 @@
         <h4>Най-новите обяви</h4>
     </div>
 
-    <app-filter (searchEvent)="filterSearchButton()"></app-filter>
+    <app-filter></app-filter>
+
+    <!-- <app-filter (searchEvent)="filterSearchButton($event)"></app-filter> -->
 
     @for (adItem of latestAds; track adItem) {
         <ad [adModel] = "adItem"></ad>

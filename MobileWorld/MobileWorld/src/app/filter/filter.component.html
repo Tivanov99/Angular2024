@@ -21,10 +21,14 @@
 
         </div>
         <div class="sidebar-action-units"> 
-            <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите"> 
+            <a routerLink="/ads" (click) = "onSearchButtonClick()" class="filter-search-button" type="button">Покажи колите</a>
+            <!-- <input >  -->
+
+            <!-- <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите">  -->
             <a href="" class="button">
                 <input type="button" value="Изчисти"> 
             </a>
         </div>
     </form>
 </div>
+<router-outlet></router-outlet>    

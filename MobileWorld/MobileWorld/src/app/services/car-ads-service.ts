@@ -30,7 +30,7 @@ export class CarAdsService {
 
   }
 
-  async getCarsBrands() : Promise<CarBrand[]>{
+  private async getCarsBrands() : Promise<CarBrand[]>{
     try{
 
       let db : Firestore = getFirestore();
@@ -50,7 +50,7 @@ export class CarAdsService {
     }
   }
 
-  async getCarsModels() : Promise<CarModels[]>{
+  private async getCarsModels() : Promise<CarModels[]>{
     try{
 
       let db : Firestore = getFirestore();
@@ -70,7 +70,7 @@ export class CarAdsService {
     }
   }
 
-  async loadCarBrand() : Promise<DropDownModel[]>{
+  async loadCarBrandAsDropDownModel() : Promise<DropDownModel[]>{
 
     let carBrandsAsDropDownData : DropDownModel[] = new Array();
 

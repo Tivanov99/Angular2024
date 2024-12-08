@@ -3,10 +3,12 @@ import { DropDownComponent } from '../drop-down/drop-down.component';
 import { DropDownModel } from '../models/drop-down-model';
 import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
 import { CarAdsService } from '../services/car-ads-service';
+import { SearchFilterModel } from '../models/search-filter-model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-filter',
-  imports: [ DropDownComponent],
+  imports: [ DropDownComponent, RouterModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
   standalone : true
@@ -15,7 +17,7 @@ export class FilterComponent{
 
   public pageModel! : PageModel;
 
-  @Output() searchEvent = new EventEmitter<void>();
+  // @Output() searchEvent = new EventEmitter<SearchFilterModel>();
 
   constructor(private carAdsService : CarAdsService) {
     this.pageModel = new PageModel(this.carAdsService)
@@ -36,12 +38,12 @@ export class FilterComponent{
 
   onSearchButtonClick(){
 
-    this.searchEvent.emit();
+    let searchFilterModel : SearchFilterModel = new SearchFilterModel();
+    searchFilterModel.carBrand = this.pageModel.carBrandContextData.getSelectedData();
+    searchFilterModel.carsModels = this.pageModel.carModelsContextData.getSelectedDataItems();
 
-    console.log(this.pageModel.carBrandContextData.getSelectedData());
-    console.log(this.pageModel.carModelsContextData.getSelectedDataItems());
+    // this.searchEvent.emit(searchFilterModel);
 
-    console.log('търсене');
   }
 
   async onSelectItem(itemID : string){
@@ -63,7 +65,7 @@ class PageModel {
   async loadData(): Promise<void> {
 
     this.carBrandContextData.setDropDownTitle('Марка');
-    this.carBrandContextData.setInputData (await this.carAdsService.loadCarBrand());
+    this.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel());
 
     this.carModelsContextData.setDropDownTitle('Модел');
     this.carModelsContextData.setUseCheckBoxesFlag(true);
