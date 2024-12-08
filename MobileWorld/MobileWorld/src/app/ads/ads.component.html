@@ -1,8 +1,10 @@
 <div class="box">
 
+    <app-filter></app-filter>
     @for (adItem of ads; track adItem) {
         <ad [adModel] = "adItem"></ad>
     }
 
 </div>
+
 <router-outlet></router-outlet>    

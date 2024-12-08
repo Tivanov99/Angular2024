@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { AdModel } from '../models/ad-model';
 import { AdComponent } from '../ad/ad.component';
 import { RouterModule } from '@angular/router';
+import { FilterComponent } from '../filter/filter.component';
 
 @Component({
   selector: 'app-ads',
-  imports: [AdComponent, RouterModule],
+  imports: [AdComponent, RouterModule, FilterComponent],
   templateUrl: './ads.component.html',
   styleUrl: './ads.component.css',
   standalone : true
