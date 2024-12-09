@@ -1,4 +1,5 @@
 <div class="drop-down-control">
+
     <p class="drop-down-control-header">{{ this.contextData.getDropDownTitle() }}</p>
     @if(!this.contextData.getUseCheckBoxesFlag()){
         <select [disabled]="!this.contextData.getEnableControl()"  (change)="onSelectedItem($event)" class="form-control" tabindex="-1" required>
@@ -24,4 +25,8 @@
         </div>
     }
     
+    @if(hasEmptySelection()){
+        <div class="error-message">Моля изберете стойност.</div>
+    }
+
 </div>

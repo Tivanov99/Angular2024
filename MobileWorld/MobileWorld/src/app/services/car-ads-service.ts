@@ -28,7 +28,10 @@ export class CarAdsService {
     this.db = getFirestore();
   }
 
-  async createAd(newCarAd : AdFullDetailsModel){
+  async createAd(newCarAd : AdFullDetailsModel) : Promise<Boolean>{
+
+    let successCreate : boolean = true;
+
     try{
       let db : Firestore = getFirestore();
 
@@ -50,14 +53,14 @@ export class CarAdsService {
       });
     }
     catch (error){
-      console.error("Грешка при добавяне на данните:", error);
-      throw error;
+      successCreate = false;
     }
+
+    return successCreate;
   }
 
   private async getRecords<RecodType>(collectionName : string) : Promise<RecodType[]>{
     try{
-
       let db : Firestore = getFirestore();
       const myCollection  = collection(db, collectionName);
   

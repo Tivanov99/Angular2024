@@ -58,7 +58,7 @@ export class FilterComponent{
 
   async onSelectItem(itemID : string){
     await this.pageModel.carModelsContextData.setInputData (
-       await this.carAdsService.loadCarModelsAsDropDownModel(itemID) );
+       await this.carAdsService.loadCarModelsAsDropDownModel(itemID).then() );
   } 
 
 }
@@ -75,7 +75,7 @@ class PageModel {
   async loadData(): Promise<void> {
 
     this.carBrandContextData.setDropDownTitle('Марка');
-    this.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel());
+    this.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel().then());
 
     this.carModelsContextData.setDropDownTitle('Модел');
     this.carModelsContextData.setUseCheckBoxesFlag(true);

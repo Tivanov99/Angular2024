@@ -5,3 +5,7 @@
 .input-control-header{
     margin-bottom: 8px;
 }
+
+.error-message{
+    color: red
+}

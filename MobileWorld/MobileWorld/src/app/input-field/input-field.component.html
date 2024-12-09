@@ -1,4 +1,8 @@
 <div class="input-control">
     <p class="input-control-header">{{ this.contextData.getInputFielTitle() }}</p>
-        <input class="form-control" [type]="contextData.getInputFieldType()" (blur)="onBlur($event)" placeholder="Въведете текст">
+    <input class="form-control" [type]="contextData.getInputFieldType()" (blur)="onBlur($event)" placeholder="Въведете текст">
+
+    @if(isEmptyField()){
+        <div class="error-message">Моля въведете стойност.</div>
+    }
 </div>

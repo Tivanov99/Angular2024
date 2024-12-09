@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DropDownComponent } from '../drop-down/drop-down.component';
 import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
 import { CarAdsService } from '../services/car-ads-service';
@@ -7,10 +7,12 @@ import { InputContextData, InputFieldType } from '../context-data-objects/input-
 import { Router } from '@angular/router';
 import { AdFullDetailsModel } from '../models/ad-full-details-model';
 import { UserService } from '../services/user-service';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { RoutePaths } from '../app.routes';
 
 @Component({
   selector: 'ad-full-details',
-  imports: [DropDownComponent, InputFieldComponent],
+  imports: [DropDownComponent, InputFieldComponent, ReactiveFormsModule],
   templateUrl: './ad-full-details.component.html',
   styleUrl: './ad-full-details.component.css',
   standalone : true
@@ -24,13 +26,31 @@ export class AdFullDetailsComponent implements OnInit{
   private _adID! : string ;
   private _adData : AdFullDetailsModel = new AdFullDetailsModel();
   private _errorOccurs: boolean = false;
+  private _invalidForm : boolean = false;
+
+  createAdForm! : FormGroup;
 
   constructor(private _carAdsService : CarAdsService
     , private _router: Router
-    , private _userService : UserService) {
+    , private _userService : UserService
+    , private _formBuilder: FormBuilder) {
+        this.pageModel = new PageModel(this._carAdsService);
+        this.currentUserAreOwnerOfThisAd();
 
-    this.pageModel = new PageModel(this._carAdsService);
-    this.currentUserAreOwnerOfThisAd();
+        this.createAdForm = this._formBuilder.group({
+          carBrand: [null],
+          carModels: [null],
+          carGearType: [null],
+          carFuelType: [null],
+          carDistance: [null],
+          carYear: [null],
+          region: [null],
+          euroStandard: [null],
+          carPrice: [null],
+          carPriceCurrency: [null],
+          horsePower: [null],
+          engineDisplacement: [null],
+      });
   }
 
   ngOnInit() {
@@ -54,6 +74,10 @@ export class AdFullDetailsComponent implements OnInit{
     return this._errorOccurs;
   }
 
+  onDeleteButton(){
+    
+  }
+
   async loadData(){
 
     if(!this._isInCreateMode){
@@ -66,15 +90,30 @@ export class AdFullDetailsComponent implements OnInit{
       this._errorOccurs = true;
       return;
     }
-
-    this.pageModel.loadData();
   }
 
-  async onCreateButtonClick(){
+  hasInvalidFormData() : boolean{
+    return this._invalidForm;
+  }
+
+  async handleSubmit(){
+    
+    Object.keys(this.createAdForm.controls).forEach((controlName) => {
+      const control = this.createAdForm.get(controlName);
+      control?.markAsTouched(); // Маркира контролата като "пипната"
+      control?.updateValueAndValidity(); // Задейства валидацията
+    });
+
+    this._invalidForm = false;
+
+    if(!this.createAdForm.valid){
+      this._invalidForm = true;
+      return;
+    }
 
     let adFullDetailsModel : AdFullDetailsModel = new AdFullDetailsModel();
 
-    adFullDetailsModel.customerCreatorID = "1";
+    adFullDetailsModel.customerCreatorID = this._userService.getCustomerID();
     adFullDetailsModel.carModelID = this.pageModel.firstSectionFields.carModelsContextData.getSelectedData().itemID;
     adFullDetailsModel.carBrandID = this.pageModel.firstSectionFields.carBrandContextData.getSelectedData().itemID;
     adFullDetailsModel.carGearID = this.pageModel.firstSectionFields.carGearTypeContextData.getSelectedData().itemID;
@@ -92,19 +131,17 @@ export class AdFullDetailsComponent implements OnInit{
     
     adFullDetailsModel.registerDataTime = new Date().toLocaleString("bg-BG");
 
-    await this._carAdsService.createAd(adFullDetailsModel);
+    const successCreate : boolean = await this._carAdsService.createAd(adFullDetailsModel).then();
+    if(successCreate)
+      this._router.navigate([RoutePaths.MyAds]);
   }
 
   async onCarBrandSelectItem(itemID : string){
     await this.pageModel.firstSectionFields.carModelsContextData.setInputData (
-       await this._carAdsService.loadCarModelsAsDropDownModel(itemID) );
+       await this._carAdsService.loadCarModelsAsDropDownModel(itemID).then() );
   } 
 
   currentUserAreOwnerOfThisAd() : boolean{
-
-    console.log(this._adData.customerCreatorID);
-    console.log( this._userService.getCustomerID());
-
     if(!this.isInCreateMode() && this._userService.hasActiveSession()
       && this._userService.getCustomerID() === this._adData.customerCreatorID)
       return true;
