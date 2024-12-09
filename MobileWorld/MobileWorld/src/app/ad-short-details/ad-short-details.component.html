@@ -2,7 +2,7 @@
     <div class="overlay col-md-8" >
         <div class="listing-list-loop">
             <div class="image"> 
-                <a routerLink="/ad-">
+                <a [routerLink]="['/ad', 'details', adFullDetailsModel.adID]">
                     <div> 
                         <img width="300" height="225">
                     </div> 
@@ -14,7 +14,7 @@
                         <span>{{adFullDetailsModel.carPrice}} {{adFullDetailsModel.currencyType}}</span>
                     </div>
                     <div> 
-                        <a routerLink="/ad-" class="rmv_txt_drctn">{{adFullDetailsModel.header}}</a>
+                        <a [routerLink]="['/ad', 'details', adFullDetailsModel.adID]" class="rmv_txt_drctn">{{adFullDetailsModel.header}}</a>
                     </div>
                 </div>
             <div>

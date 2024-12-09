@@ -1,5 +1,6 @@
 export class AdFullDetailsModel{
     customerCreatorID! : string;
+    adID! : string;
     carModelID! : string;
     carBrandID! : string;
     carGearID! : string;

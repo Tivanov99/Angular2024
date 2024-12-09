@@ -1,4 +1,5 @@
 export class AdShortDetailsModel{
+    adID!: string;
     header! : string;
     carPrice! : string;
     engineDisplacement! : string;

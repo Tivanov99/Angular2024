@@ -1,16 +1,15 @@
 .create-ad-button{
     margin-top: 10px;
-    margin-bottom : 10px;
 }
 
 .save-changes-button{
     margin-top: 10px;
-    margin-bottom : 10px;
 }
 
 .form-border{
     margin-top: 15px;
     border: #eff0f4 3px solid;
+    padding-bottom: 10px;
 }
 
 .component-header{

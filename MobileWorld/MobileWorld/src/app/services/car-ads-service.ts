@@ -75,6 +75,27 @@ export class CarAdsService {
     }
   }
 
+  async loadAd(adID : string) : Promise<AdFullDetailsModel> {
+
+    let adModel : AdFullDetailsModel = new AdFullDetailsModel();
+
+    await this.getRecords<AdFullDetailsModel>('cars_ads').then(data =>{
+      for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        const documentData = element as DocumentData;
+        adModel.adID = documentData['id'];
+        
+        if(adID === documentData['id']){
+          adModel.adID = documentData['id'];
+          adModel = element;
+          break;
+        }
+      }
+    });
+
+    return adModel;
+  }
+
   async loadAds(requiredDataExpansion : CarsRequiredDataExpansion) : Promise<AdShortDetailsModel[]> {
 
     const fuelTypes : FuelTypeModel[] = await this.loadFuelTypes().then();
@@ -94,6 +115,11 @@ export class CarAdsService {
         const carBrand : string = carBrands.find(i=>i.itemID === adFullDetails.carBrandID)!.name;
         const carModel : string = carModels.find(i=>i.modelID === adFullDetails.carModelID)!.modelName;
 
+        const documentData = adFullDetails as DocumentData;
+
+        console.log(`loading Ads ${documentData['id']}`);
+        
+        adShortDetails.adID = documentData['id'];
         adShortDetails.header = `${carBrand} ${carModel}`;
         adShortDetails.carPrice = adFullDetails.carPrice;
         adShortDetails.engineDisplacement = adFullDetails.engineDisplacement;

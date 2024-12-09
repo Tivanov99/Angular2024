@@ -5,7 +5,6 @@ import { CarAdsService } from '../services/car-ads-service';
 import { InputFieldComponent } from '../input-field/input-field.component';
 import { InputContextData, InputFieldType } from '../context-data-objects/input-context-data';
 import { Router } from '@angular/router';
-import { RoutePaths } from '../app.routes';
 import { AdFullDetailsModel } from '../models/ad-full-details-model';
 import { UserService } from '../services/user-service';
 
@@ -22,40 +21,52 @@ export class AdFullDetailsComponent implements OnInit{
   private _enableleAllControlls : boolean = false;
   private _isInEditMode : boolean = false;
   private _isInCreateMode : boolean = false;
-
-  private _currentUrl: string = '';
+  private _adID! : string ;
+  private _adData : AdFullDetailsModel = new AdFullDetailsModel();
+  private _errorOccurs: boolean = false;
 
   constructor(private _carAdsService : CarAdsService
     , private _router: Router
     , private _userService : UserService) {
 
     this.pageModel = new PageModel(this._carAdsService);
-    this.loadData();
     this.currentUserAreOwnerOfThisAd();
   }
 
   ngOnInit() {
 
-    this._currentUrl = this._router.url;
-
-    if (this._currentUrl.startsWith('/')) {
-      this._currentUrl = this._currentUrl.slice(1);
+    const snapshot = this._router.routerState.snapshot;
+    const urlSegments = snapshot.url.split('/');
+    const idIndex = urlSegments.findIndex(segment => segment === 'details');
+    if (idIndex !== -1 && urlSegments[idIndex + 1]) {
+      this._adID = urlSegments[idIndex + 1];
     }
 
-    if(this._currentUrl === RoutePaths.CreateAd){
+    if(idIndex === -1){
       this._enableleAllControlls = true;
       this._isInCreateMode = true;
     }
-      
+
+    this.loadData();
   }
 
-  initForm(){}
+  hasErrors() : boolean{
+    return this._errorOccurs;
+  }
 
-  loadData(){
+  async loadData(){
 
-    //ако имаме потребителска сесия и сме от контекст на редакция или добавяне - disableAllControlls = false;
-    //ако имаме потребителска сесия но сме от контекст на преглед и обявата на пренадлежи на този потребител disableAllControlls = true;
-    //ако нямаме потребилска сесия disableAllControlls = true;
+    if(!this._isInCreateMode){
+      await this._carAdsService.loadAd(this._adID).then(fetchData=>{
+        this._adData = fetchData
+      });
+    }
+
+    if( this._adData === undefined){
+      this._errorOccurs = true;
+      return;
+    }
+
     this.pageModel.loadData();
   }
 
@@ -91,11 +102,13 @@ export class AdFullDetailsComponent implements OnInit{
 
   currentUserAreOwnerOfThisAd() : boolean{
 
-    if(this._userService.hasActiveSession())
+    console.log(this._adData.customerCreatorID);
+    console.log( this._userService.getCustomerID());
+
+    if(!this.isInCreateMode() && this._userService.hasActiveSession()
+      && this._userService.getCustomerID() === this._adData.customerCreatorID)
       return true;
 
-    //ако имаме потребителска сесия и ТОЗИ ПОТРЕБИТЕЛ Е създал обявата- 
-    //сравняваме creatorID с customerID от сесията
     return false;
   }
 

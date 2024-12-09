@@ -8,7 +8,6 @@ import { UserModel } from "../models/user-model";
 export class UserService{
 
     USER_KEY = '[user]';
-    private _user : UserModel = new UserModel();
     private db : Firestore;
 
     constructor() {
@@ -73,16 +72,17 @@ export class UserService{
     async login(email : string, password : string) : Promise<boolean>{
 
         let userFound : boolean = false;
-        
+        let userModel : UserModel = new UserModel();
+
         await this.getData<UserModel>('users').then(data=>{
             for (let index = 0; index < data.length; index++) {
                 const element:UserModel = data[index];
                 if(element.email === email && element.password === password){    
                     let documentData = element as DocumentData;
-                    this._user.userName = element.userName,  
-                    this._user.customerID = documentData['id'];
-                    this._user.email = element.email;
-                    this._user.password = element.password;
+                    userModel.userName = element.userName,  
+                    userModel.customerID = documentData['id'];
+                    userModel.email = element.email;
+                    userModel.password = element.password;
                     userFound = true;
                     break;
                 }
@@ -90,25 +90,26 @@ export class UserService{
         }).then()
 
         if(userFound)
-            localStorage.setItem(this.USER_KEY, JSON.stringify(this._user))
+            localStorage.setItem(this.USER_KEY, JSON.stringify(userModel))
 
         return userFound;
     }
 
     logOut(){
-        this._user = new UserModel();
         localStorage.removeItem(this.USER_KEY);
     }
 
     getCustomerID() : string{
-        return this._user.customerID
+        let userModel : UserModel = JSON.parse(localStorage.getItem(this.USER_KEY)!);
+
+        return userModel.customerID
     }
 
     hasActiveSession() : boolean{
         const userSession = localStorage.getItem(this.USER_KEY);;
         if(userSession == null || userSession.trim().length === 0)
             return false;
-
+        
         return true;
     }
 

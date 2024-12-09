@@ -11,9 +11,10 @@ export enum RoutePaths{
     Registration = 'registration',
     Login = 'login',
     Ads = 'ads',
+    AdDetails = "ad/details/:id",
     Forum = 'forum',
-    CreateAd = 'create-ad',
-    EditAd = 'edit-ad',
+    AdCreate = 'ad/create',
+    // EditAd = 'edit-ad',
     MyAds = 'my-ads'
 }
 export const routes: Routes = [
@@ -23,7 +24,8 @@ export const routes: Routes = [
     {path: RoutePaths.Login, component : LoginComponent, title:'Вход'},
     {path: RoutePaths.Ads, component : AdsComponent, title:'Всички бяви'},
     {path: RoutePaths.Forum, component : ForumComponent},
-    {path: RoutePaths.CreateAd, component : AdFullDetailsComponent, title:'Създаване на обява'},
-    {path: RoutePaths.EditAd, component : AdFullDetailsComponent, title:'Редакция на обява'},
+    {path: RoutePaths.AdCreate, component : AdFullDetailsComponent, title:'Създаване на обява'},
+    // {path: RoutePaths.EditAd, component : AdFullDetailsComponent, title:'Редакция на обява'},
     {path: RoutePaths.MyAds, component : AdsComponent, title:'Моите обяви'},
+    {path: RoutePaths.AdDetails, component : AdFullDetailsComponent, title:'Преглед на обява'},
 ];
