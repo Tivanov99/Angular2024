@@ -4,7 +4,7 @@ import { FilterComponent } from '../filter/filter.component';
 import { AdShortDetailsComponent } from '../ad-short-details/ad-short-details.component';
 import { CounterComponent } from '../counter/counter.component';
 import { AdShortDetailsModel } from '../models/ad-short-details-model';
-import { CarAdsService } from '../services/car-ads-service';
+import { CarAdsService, CarsRequiredDataExpansion } from '../services/car-ads-service';
 
 @Component({
   selector: 'home',
@@ -30,7 +30,7 @@ export class HomeComponent {
 
   async loadData(){
 
-    await this._carAdsService.loadLatestAds().then((data=>{
+    await this._carAdsService.loadAds(CarsRequiredDataExpansion.LatestData).then((data=>{
       data.forEach(item =>{
         this._latestAds.push(item);
       })

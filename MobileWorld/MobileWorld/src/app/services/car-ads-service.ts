@@ -13,6 +13,10 @@ import { CurrencyModel } from "../models/currency-model";
 import { AdFullDetailsModel } from "../models/ad-full-details-model";
 import { AdShortDetailsModel } from "../models/ad-short-details-model";
 
+export enum CarsRequiredDataExpansion{
+  FullData,
+  LatestData 
+}
 
 @Injectable({providedIn: 'root'})
 export class CarAdsService {
@@ -71,7 +75,7 @@ export class CarAdsService {
     }
   }
 
-  async loadLatestAds() : Promise<AdShortDetailsModel[]> {
+  async loadAds(requiredDataExpansion : CarsRequiredDataExpansion) : Promise<AdShortDetailsModel[]> {
 
     const fuelTypes : FuelTypeModel[] = await this.loadFuelTypes().then();
     const gearTypes : GearTypeModel[] = await this.loadGearTypes().then();
@@ -104,17 +108,21 @@ export class CarAdsService {
         latestAds.push(adShortDetails);
       })
     });
+    
+    if(requiredDataExpansion === CarsRequiredDataExpansion.LatestData){
+      const sortedRecords = latestAds.sort((a, b) => {
+        const dateA = this.parseDateString(a.registerDataTime);
+        const dateB = this.parseDateString(b.registerDataTime);
+        return dateB.getTime() - dateA.getTime(); // Низходящ ред
+      });
+  
+      // Вземане на първите 4 записа
+      const top4Records = sortedRecords.slice(0, 2);
 
-    const sortedRecords = latestAds.sort((a, b) => {
-      const dateA = this.parseDateString(a.registerDataTime);
-      const dateB = this.parseDateString(b.registerDataTime);
-      return dateB.getTime() - dateA.getTime(); // Низходящ ред
-    });
+      return top4Records
+    }
 
-    // Вземане на първите 4 записа
-    const top4Records = sortedRecords.slice(0, 4);
-
-    return top4Records;
+    return latestAds;
   }
 
   parseDateString(dateString: string): Date {
