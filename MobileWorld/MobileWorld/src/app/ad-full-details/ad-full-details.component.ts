@@ -7,6 +7,7 @@ import { InputContextData, InputFieldType } from '../context-data-objects/input-
 import { Router } from '@angular/router';
 import { RoutePaths } from '../app.routes';
 import { AdFullDetailsModel } from '../models/ad-full-details-model';
+import { UserService } from '../services/user-service';
 
 @Component({
   selector: 'ad-full-details',
@@ -25,7 +26,8 @@ export class AdFullDetailsComponent implements OnInit{
   private _currentUrl: string = '';
 
   constructor(private _carAdsService : CarAdsService
-    ,private _router: Router) {
+    , private _router: Router
+    , private _userService : UserService) {
 
     this.pageModel = new PageModel(this._carAdsService);
     this.loadData();
@@ -88,8 +90,13 @@ export class AdFullDetailsComponent implements OnInit{
   } 
 
   currentUserAreOwnerOfThisAd() : boolean{
-    //ако имаме потребителска сесия и ТОЗИ ПОТРЕБИТЕЛ Е създал обявата
-    return true;
+
+    if(this._userService.hasActiveSession())
+      return true;
+
+    //ако имаме потребителска сесия и ТОЗИ ПОТРЕБИТЕЛ Е създал обявата- 
+    //сравняваме creatorID с customerID от сесията
+    return false;
   }
 
   showOwnerButtons() : boolean{

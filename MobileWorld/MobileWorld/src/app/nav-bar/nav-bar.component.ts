@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SessionManagerService } from '../services/session-manager-service';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../services/user-service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,40 +11,10 @@ import { RouterLink } from '@angular/router';
 })
 export class NavBarComponent {
 
-  constructor(public _sessionManagerService : SessionManagerService) {
-    
+  constructor(public userService : UserService) {
   }
 
-  onRegistrationClick() : void{
-
+  logOut(){
+    this.userService.logOut();
   }
-
-  onLoginClick() : void{
-
-  }
-
-  onLogoutClick() : void{
-    
-  }
-
-  onHomeClick(): void {
-
-  }
-
-  onAllAddsClick(): void {
-    console.log('onAllAddsClick');
-  }
-
-  onFavouritesClick() : void{
-
-  }
-
-  onAddVIPAddClick() : void{
-
-  }
-
-  onForumClick() : void{
-
-  }
-
 }

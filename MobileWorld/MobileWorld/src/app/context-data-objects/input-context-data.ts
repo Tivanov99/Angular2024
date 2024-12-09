@@ -1,6 +1,8 @@
 export enum InputFieldType{
     Text = "text",
-    Number = "number"
+    Number = "number",
+    password = "password",
+    Email = "email"
 }
 
 export class InputContextData{

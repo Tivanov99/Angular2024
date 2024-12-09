@@ -8,7 +8,7 @@
           <li class="nav-item">
               <a class="nav-link" routerLink="/ads">Всички обяви</a>
           </li>
-          <!-- @if(this._sessionManagerService.hasActiveSession()){ -->
+          @if(userService.hasActiveSession()){
             <li class="nav-item">
               <a class="nav-link" routerLink="/my-ads">Моите обяви</a>
             </li>
@@ -18,23 +18,23 @@
             <li class="nav-item">
               <a class="nav-link" routerLink="/create-ad" >Добави обява</a>
            </li>
-          <!-- } -->
+          }
           <li class="nav-item">
             <a class="nav-link" routerLink="/forum" href="#">Форум</a>
           </li>
           <ul class="navbar-nav ms-auto">
-            <!-- @if(this._sessionManagerService.hasActiveSession()){ -->
+            @if(userService.hasActiveSession()){
               <li class="nav-item">
-                <a class="nav-link" href="#">Изход</a>
+                <a (click)="logOut()" class="nav-link" routerLink="/home">Изход</a>
              </li>
-            <!-- }@else{ -->
+            }@else{ 
              <li class="nav-item">
-              <a class="nav-link" routerLink="/login">Вход</a>
+                <a class="nav-link" routerLink="/login">Вход</a>
              </li>
              <li class="nav-item">
                <a class="nav-link" routerLink="/registration">Регистрация</a>
              </li>
-            <!-- } -->
+            }
           </ul>
         </ul>
       </div>
