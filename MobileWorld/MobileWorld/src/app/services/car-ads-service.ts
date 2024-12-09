@@ -79,12 +79,6 @@ export class CarAdsService {
     const carModels : CarModels[] = await this.loadCarModels().then();
     const carBrands : CarBrand[] = await this.loadCarBrands().then();
     const currencyes : CurrencyModel[] = await this.loadCurrency().then();
-
-    // console.log(fuelTypes);
-    // console.log(gearTypes);
-    // console.log(regions);
-    // console.log(carModels);
-    // console.log(carBrands);
     
     let latestAds : AdShortDetailsModel[] = new Array();
 
@@ -106,11 +100,39 @@ export class CarAdsService {
         adShortDetails.carGearTypeName = gearTypes.find(i=>i.itemID === adFullDetails.carGearID)!.name;
         adShortDetails.regionName = regions.find(i=>i.itemID === adFullDetails.regionID)!.name;
         adShortDetails.currencyType = currencyes.find(i=>i.itemID === adFullDetails.carPriceCurrencyID)!.name;
+        
         latestAds.push(adShortDetails);
       })
     });
 
-    return latestAds;
+    const sortedRecords = latestAds.sort((a, b) => {
+      const dateA = this.parseDateString(a.registerDataTime);
+      const dateB = this.parseDateString(b.registerDataTime);
+      return dateB.getTime() - dateA.getTime(); // Низходящ ред
+    });
+
+    // Вземане на първите 4 записа
+    const top4Records = sortedRecords.slice(0, 4);
+
+    return top4Records;
+  }
+
+  parseDateString(dateString: string): Date {
+
+    // Премахване на "г." и "ч."
+    const cleanedString = dateString.replace('г.', '').replace('ч.', '').trim();
+    
+    // Разделяне на датата и часа
+    const [datePart, timePart] = cleanedString.split(', ');
+    
+    // Преобразуване на датата в формат ISO (YYYY-MM-DD)
+    const [day, month, year] = datePart.split('.').map(Number);
+
+    // console.log(`${day} ${month} ${year}`);
+    
+    const isoString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${timePart}`;
+    
+    return new Date(isoString);
   }
 
   private async loadCurrency() : Promise<CurrencyModel[]>{
