@@ -1,22 +1,89 @@
 <div class="form-display-position">
-    <form class="registration-form">
+    <form class="registration-form" [formGroup]="registerForm" (ngSubmit)="handleSubmit()">
         <h2>Регистрация</h2>
+
         <div class="form-group">
             <label for="username">Потребителско име</label>
-            <input type="text" id="username" name="username" placeholder="Въведете потребителско име" required>
+            <input type="text" formControlName="username" id="username" name="username" placeholder="Въведете потребителско име" required>
         </div>
+
+        @if(registerForm.get('username')?.touched){
+            <div>
+              @if(registerForm.get('username')?.errors?.['required']){
+                <div class="error-message">Моля попълнете 'Потребителско име'.</div>
+              }
+
+              @if(registerForm.get('username')?.hasError('minlength')){
+                <div class="error-message">Минимална дължина {{ registerForm.get('username')?.getError('minlength')?.requiredLength }}' символа.</div>
+              }
+            </div>
+        }
+
         <div class="form-group">
             <label for="email">Имейл</label>
-            <input type="email" id="email" name="email" placeholder="Въведете имейл" required>
+            <input type="email" formControlName="email" id="email" name="email" placeholder="Въведете имейл" required>
         </div>
+
+        @if(registerForm.get('email')?.touched){
+            <div>
+              @if(registerForm.get('email')?.errors?.['required']){
+                <div class="error-message">Моля попълнете 'Имейл'.</div>
+              }
+              <!--  -->
+              @if(registerForm.get('email')?.errors?.['email']){
+                <div class="error-message">Некоректна стойност в поле 'Имейл'.</div>
+              }
+            </div>
+        }
+
         <div class="form-group">
             <label for="password">Парола</label>
-            <input type="password" id="password" name="password" placeholder="Въведете паролата си" required>
+            <input type="password" id="password" name="password" formControlName="password" placeholder="Въведете паролата си" required>
         </div>
+
+        @if(registerForm.get('password')?.touched){
+            <div>
+              @if(registerForm.get('password')?.errors?.['required']){
+                <div class="error-message">Моля попълнете 'Парола'.</div>
+              }
+              <!--  -->
+              @if(registerForm.get('password')?.hasError('minlength')){
+                <div class="error-message">Минимална дължина {{ registerForm.get('password')?.getError('minlength')?.requiredLength }}' символа.</div>
+              }
+            </div>
+        }
+
         <div class="form-group">
-            <label for="confirm-password">Потвърдете паролата</label>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="Въведете отново паролата си" required>
+            <label for="confirmPassword">Потвърдете паролата</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" placeholder="Въведете отново паролата си" required>
         </div>
-        <button type="submit" class="submit-btn">Регистрация</button>
+
+        @if(registerForm.get('confirmPassword')?.touched){
+            <div>
+              @if(registerForm.get('confirmPassword')?.errors?.['required']){
+                <div class="error-message">Моля попълнете 'Потвърдете паролата'.</div>
+              }
+              <!--  -->
+              @if(registerForm.get('confirmPassword')?.hasError('minlength')){
+                <div class="error-message">Минимална дължина {{ registerForm.get('confirmPassword')?.getError('minlength')?.requiredLength }}' символа.</div>
+              }
+            </div>
+        }
+
+        <div class="container text-start form-border notification">
+            @if(hasErrors()){
+              <p class="error-message">{{ getMessage() }}</p>
+            }
+            @else if(registrationIsSuccess()) {
+              <div style="display: flex; align-items: center;">
+                <span class="success-message">{{ getMessage() }}</span>
+                <button class="submit-btn" (click)="login()">Вход</button>
+              </div>
+            }
+        </div>
+        
+        @if(!registrationIsSuccess()) {
+          <button type="submit" class="submit-btn">Регистрация</button>
+        }
     </form>
 </div>

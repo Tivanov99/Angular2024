@@ -1,24 +1,14 @@
 import { Injectable } from "@angular/core";
 import { initializeApp } from "firebase/app";
-import { collection, Firestore, getDocs, getFirestore } from "firebase/firestore";
+import { addDoc, collection, DocumentData, Firestore, getDocs, getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "../../environments/environment";
-
-class UserForAuth{
-
-    email! : string;
-    password! : string;
-    customerID!: string;
-
-    constructor() {
-    }
-
-}
+import { UserModel } from "../models/user-model";
 
 @Injectable({providedIn: 'root'})
 export class UserService{
 
     USER_KEY = '[user]';
-    private _user : UserForAuth = new UserForAuth();
+    private _user : UserModel = new UserModel();
     private db : Firestore;
 
     constructor() {
@@ -26,16 +16,71 @@ export class UserService{
         this.db = getFirestore();
     }
 
+    private async checkForExistingEmail(email : string) : Promise<boolean>{
+
+        let emailFound : boolean = false;
+        
+        await this.getData<UserModel>('users').then(data=>{
+            for (let index = 0; index < data.length; index++) {
+                const element:UserModel = data[index];
+                if(element.email === email ){    
+                    emailFound = true;
+                    break;
+                }
+            }
+        }).then()
+
+        return emailFound;
+    }
+
+    async createUser(userModel : UserModel) : Promise<string>{
+
+        let message : string = '';
+        let emailFoud = false;
+        
+        try{
+            await this.checkForExistingEmail(userModel.email).then(data=>{
+                if(data === true){
+                    emailFoud = true;
+                }
+            });
+        }catch (error){
+            message = 'Възникна грешка';
+            return message;
+        }
+        
+        if(emailFoud){
+            message = 'Има вече съществуващ потребител с този имейл адрес';
+            return message;
+        }
+
+        try{
+            let db : Firestore = getFirestore();
+            await addDoc(collection(db, 'users'), {
+                userName : userModel.userName,
+                email : userModel.email,
+                password : userModel.password
+            });
+        }
+        catch (error){
+            message = 'Грешка при добавяне на данните';
+            return message;
+        }
+
+        return message;
+    }
+
     async login(email : string, password : string) : Promise<boolean>{
 
         let userFound : boolean = false;
         
-        await this.getUsers<UserForAuth>('users').then(data=>{
+        await this.getData<UserModel>('users').then(data=>{
             for (let index = 0; index < data.length; index++) {
-                const element:UserForAuth = data[index];
-
-                if(element.email === email && element.password === password){                    
-                    this._user.customerID = element.customerID;
+                const element:UserModel = data[index];
+                if(element.email === email && element.password === password){    
+                    let documentData = element as DocumentData;
+                    this._user.userName = element.userName,  
+                    this._user.customerID = documentData['id'];
                     this._user.email = element.email;
                     this._user.password = element.password;
                     userFound = true;
@@ -51,8 +96,8 @@ export class UserService{
     }
 
     logOut(){
-        this._user = new UserForAuth();
-        localStorage.clear();
+        this._user = new UserModel();
+        localStorage.removeItem(this.USER_KEY);
     }
 
     getCustomerID() : string{
@@ -68,7 +113,7 @@ export class UserService{
     }
 
 
-    private async getUsers<UserForAuth>(collectionName : string) : Promise<UserForAuth[]>{
+    private async getData<UserForAuth>(collectionName : string) : Promise<UserForAuth[]>{
         try{
     
           let db : Firestore = getFirestore();

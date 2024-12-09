@@ -6,15 +6,12 @@
         </div>
         <div class="form-group">
             <input-field [contextData] = "pageModel.passwordInputContextData"></input-field>
-            <!-- <label for="password">Парола</label>
-            <input (blur) type="password" placeholder="Въведете паролата си" required> -->
         </div>
+        @if(loginIsFailed()){
+            <div class="container text-start form-border notification">
+                  <p class="error-message">{{ getMessage() }}</p>
+            </div>
+        }
         <button (click)="login($event)" class="submit-btn">Вход</button>
     </form>
-
-    @if(loginFailed){
-        <div class="error-message">
-            {{ errorMessage }}
-        </div>
-    }
 </div>
