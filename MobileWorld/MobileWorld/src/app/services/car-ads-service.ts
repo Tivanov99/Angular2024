@@ -99,7 +99,7 @@ export class CarAdsService {
     return adModel;
   }
 
-  async loadAds(requiredDataExpansion : CarsRequiredDataExpansion) : Promise<AdShortDetailsModel[]> {
+  private async loadAds(){
 
     const fuelTypes : FuelTypeModel[] = await this.loadFuelTypes().then();
     const gearTypes : GearTypeModel[] = await this.loadGearTypes().then();
@@ -108,7 +108,7 @@ export class CarAdsService {
     const carBrands : CarBrand[] = await this.loadCarBrands().then();
     const currencyes : CurrencyModel[] = await this.loadCurrency().then();
     
-    let latestAds : AdShortDetailsModel[] = new Array();
+    let ads : AdShortDetailsModel[] = new Array();
 
     await this.getRecords<AdFullDetailsModel>('cars_ads').then(data =>{
 
@@ -119,9 +119,8 @@ export class CarAdsService {
         const carModel : string = carModels.find(i=>i.modelID === adFullDetails.carModelID)!.modelName;
 
         const documentData = adFullDetails as DocumentData;
-
-        console.log(`loading Ads ${documentData['id']}`);
         
+        adShortDetails.customerCreatorID = adFullDetails.customerCreatorID;
         adShortDetails.adID = documentData['id'];
         adShortDetails.header = `${carBrand} ${carModel}`;
         adShortDetails.carPrice = adFullDetails.carPrice;
@@ -134,24 +133,41 @@ export class CarAdsService {
         adShortDetails.regionName = regions.find(i=>i.itemID === adFullDetails.regionID)!.name;
         adShortDetails.currencyType = currencyes.find(i=>i.itemID === adFullDetails.carPriceCurrencyID)!.name;
         
-        latestAds.push(adShortDetails);
+        ads.push(adShortDetails);
       })
     });
-    
-    if(requiredDataExpansion === CarsRequiredDataExpansion.LatestData){
-      const sortedRecords = latestAds.sort((a, b) => {
+
+    return ads;
+  }
+  
+  async loadCustomerAds(customerID : string) : Promise<AdShortDetailsModel[]>{
+
+    let userAds : AdShortDetailsModel [] = new Array();
+
+    await this.loadAds().then((data) => {
+        userAds.push(...data.filter(ad => ad.customerCreatorID === customerID))
+      });
+
+    return userAds;
+  }
+
+  async loadLatetAds() : Promise<AdShortDetailsModel[]> {
+
+    let latestAds : AdShortDetailsModel [] = new Array();
+
+    await this.loadAds().then((data) => {
+        latestAds = data.sort((a, b) => {
         const dateA = this.parseDateString(a.registerDataTime);
         const dateB = this.parseDateString(b.registerDataTime);
         return dateB.getTime() - dateA.getTime(); // Низходящ ред
       });
-  
-      // Вземане на първите 4 записа
-      const top4Records = sortedRecords.slice(0, 2);
 
-      return top4Records
-    }
+    });
+    
+    // Вземане на първите 4 записа
+    const top4Records = latestAds.slice(0, 3);
 
-    return latestAds;
+    return top4Records
   }
 
   parseDateString(dateString: string): Date {

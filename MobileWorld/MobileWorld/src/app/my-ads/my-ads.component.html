@@ -1,0 +1,7 @@
+<div class="box">
+    @for (adItem of getAds(); track adItem) {
+        <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+    }
+</div>
+
+<router-outlet></router-outlet>    

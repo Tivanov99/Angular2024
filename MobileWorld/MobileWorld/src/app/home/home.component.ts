@@ -30,11 +30,7 @@ export class HomeComponent {
 
   async loadData(){
 
-    await this._carAdsService.loadAds(CarsRequiredDataExpansion.LatestData).then((data=>{
-      data.forEach(item =>{
-        this._latestAds.push(item);
-      })
-    }));
+    this._latestAds.push(...await this._carAdsService.loadLatetAds());
 
   }
 

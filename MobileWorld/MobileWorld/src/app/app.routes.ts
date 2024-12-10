@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { ForumComponent } from './forum/forum.component';
 import { AdFullDetailsComponent } from './ad-full-details/ad-full-details.component';
 import { AdsComponent } from './ads/ads.component';
+import { MyAdsComponent } from './my-ads/my-ads.component';
 
 export enum RoutePaths{
     Home = 'home',
@@ -24,6 +25,6 @@ export const routes: Routes = [
     {path: RoutePaths.Ads, component : AdsComponent, title:'Всички бяви'},
     {path: RoutePaths.Forum, component : ForumComponent},
     {path: RoutePaths.AdCreate, component : AdFullDetailsComponent, title:'Създаване на обява'},
-    {path: RoutePaths.MyAds, component : AdsComponent, title:'Моите обяви'},
+    {path: RoutePaths.MyAds, component : MyAdsComponent, title:'Моите обяви'},
     {path: RoutePaths.AdDetails, component : AdFullDetailsComponent, title:'Преглед на обява'},
 ];

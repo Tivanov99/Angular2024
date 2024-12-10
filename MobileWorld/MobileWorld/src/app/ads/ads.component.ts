@@ -16,8 +16,7 @@ export class AdsComponent implements OnInit {
 
   public ads : AdShortDetailsModel[] = new Array();
 
-  constructor(private carAdsService : CarAdsService
-    , private _router: Router) {
+  constructor(private carAdsService : CarAdsService) {
   }
 
   ngOnInit(): void {
@@ -27,12 +26,7 @@ export class AdsComponent implements OnInit {
 
   async loadData(){
 
-    await this.carAdsService.loadAds(CarsRequiredDataExpansion.FullData)
-      .then(data=>{
-        data.forEach(item =>{
-          this.ads.push(item)
-        })
-      });
+    this.ads.push(... await this.carAdsService.loadLatetAds());
 
   }
 }
