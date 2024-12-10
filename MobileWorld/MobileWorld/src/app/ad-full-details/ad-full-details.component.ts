@@ -53,7 +53,7 @@ export class AdFullDetailsComponent implements OnInit{
       });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     const snapshot = this._router.routerState.snapshot;
     const urlSegments = snapshot.url.split('/');
@@ -67,7 +67,7 @@ export class AdFullDetailsComponent implements OnInit{
       this._isInCreateMode = true;
     }
 
-    this.loadData();
+    await this.loadData();
   }
 
   hasErrors() : boolean{
@@ -79,17 +79,42 @@ export class AdFullDetailsComponent implements OnInit{
   }
 
   async loadData(){
-
-    if(!this._isInCreateMode){
-      await this._carAdsService.loadAd(this._adID).then(fetchData=>{
-        this._adData = fetchData
-      });
-    }
-
+    
+    await this._carAdsService.loadAd(this._adID).then(fetchData=>{
+      this._adData = fetchData
+    });
+    
     if( this._adData === undefined){
       this._errorOccurs = true;
       return;
     }
+    
+    this.initControls();
+  }
+
+  initControls() : void{
+
+    if(this.isInCreateMode())
+      return;
+    
+    this.pageModel.firstSectionFields.carBrandContextData.setSelectedDataByID(this._adData.carBrandID);
+    this.onCarBrandSelectItem(this._adData.carBrandID);
+    this.pageModel.firstSectionFields.carModelsContextData.setSelectedDataByID(this._adData.carModelID);
+    
+    this.pageModel.firstSectionFields.carGearTypeContextData.setSelectedDataByID(this._adData.carGearID);
+    this.pageModel.firstSectionFields.carFuelTypeContextData.setSelectedDataByID(this._adData.carFuelTypeID);
+
+    this.pageModel.secondSectionFields.carDistanceContextData.setInputFieldData(this._adData.carDistanceID);
+    this.pageModel.secondSectionFields.carYearContextData.setInputFieldData(this._adData.carYear);
+
+    this.pageModel.secondSectionFields.regionContextData.setSelectedDataByID(this._adData.regionID);
+    this.pageModel.secondSectionFields.euroStandardContextData.setSelectedDataByID(this._adData.euroStandardID);
+    
+    this.pageModel.thirdSectionFields.carPriceContextData.setInputFieldData(this._adData.carPrice);
+    this.pageModel.thirdSectionFields.carPriceCurrencyContextData.setSelectedDataByID(this._adData.carPriceCurrencyID);
+    this.pageModel.thirdSectionFields.horsePowerContextData.setInputFieldData(this._adData.horsePower);
+    this.pageModel.thirdSectionFields.engineDisplacementContextData.setInputFieldData(this._adData.engineDisplacement);
+  
   }
 
   hasInvalidFormData() : boolean{
@@ -122,6 +147,7 @@ export class AdFullDetailsComponent implements OnInit{
     adFullDetailsModel.carDistanceID = this.pageModel.secondSectionFields.carDistanceContextData.getInputData();
     adFullDetailsModel.carYear = this.pageModel.secondSectionFields.carYearContextData.getInputData();
     adFullDetailsModel.regionID = this.pageModel.secondSectionFields.regionContextData.getSelectedData().itemID;
+
     adFullDetailsModel.euroStandardID = this.pageModel.secondSectionFields.euroStandardContextData.getSelectedData().itemID;
 
     adFullDetailsModel.carPrice = this.pageModel.thirdSectionFields.carPriceContextData.getInputData();
@@ -137,8 +163,12 @@ export class AdFullDetailsComponent implements OnInit{
   }
 
   async onCarBrandSelectItem(itemID : string){
-    await this.pageModel.firstSectionFields.carModelsContextData.setInputData (
-       await this._carAdsService.loadCarModelsAsDropDownModel(itemID).then() );
+    console.log('onCarBrandSelectItem');
+    console.log(itemID);
+
+    this._carAdsService.loadCarModelsAsDropDownModelByID(itemID).then(data =>{
+      this.pageModel.firstSectionFields.carModelsContextData.setInputData(data)
+    });
   } 
 
   currentUserAreOwnerOfThisAd() : boolean{
@@ -156,16 +186,15 @@ export class AdFullDetailsComponent implements OnInit{
   onEditButtonClick(){
     if(this.currentUserAreOwnerOfThisAd()){
       this._enableleAllControlls = true;
-      this._isInEditMode = true;
+      this._isInEditMode = true;      
     }
     else
       this._enableleAllControlls = false;
-
-      console.log('edittttttttt');
   }
   
   onCancelClick(){
     this._isInEditMode = false;
+    this._enableleAllControlls = false;
   }
 
   isInEditMode(){
@@ -180,9 +209,6 @@ export class AdFullDetailsComponent implements OnInit{
     return this._enableleAllControlls;
   }
 
-  onSaveChangesButton(){
-
-  }
 }
 
 class FirstSectionFields{
@@ -234,15 +260,29 @@ class PageModel {
 
   async loadFirstSectionData() : Promise<void> {
     this.firstSectionFields.carBrandContextData.setDropDownTitle('Марка');
-    this.firstSectionFields.carBrandContextData.setInputData (await this.carAdsService.loadCarBrandAsDropDownModel().then());
+
+    this.carAdsService.loadCarBrandAsDropDownModel().then(data =>{
+      this.firstSectionFields.carBrandContextData.setInputData ( data );
+    });
+
 
     this.firstSectionFields.carModelsContextData.setDropDownTitle('Модел');
 
+    this.carAdsService.loadCarModelsAsDropDownModel().then(data =>{
+      this.firstSectionFields.carModelsContextData.setInputData ( data );
+    });
+
     this.firstSectionFields.carGearTypeContextData.setDropDownTitle('Тип скоростна кутия');
-    this.firstSectionFields.carGearTypeContextData.setInputData (await this.carAdsService.loadGearTypesAsDropDownModel().then());
+
+    this.carAdsService.loadGearTypesAsDropDownModel().then(data =>{
+      this.firstSectionFields.carGearTypeContextData.setInputData ( data );
+    });
 
     this.firstSectionFields.carFuelTypeContextData.setDropDownTitle('Тип гориво');
-    this.firstSectionFields.carFuelTypeContextData.setInputData (await this.carAdsService.loadFuelTypesAsDropDownModel().then());
+
+    this.carAdsService.loadFuelTypesAsDropDownModel().then(data =>{
+      this.firstSectionFields.carFuelTypeContextData.setInputData ( data );
+    })
   }
 
   async loadSecondSectionData() : Promise<void> {
@@ -253,10 +293,14 @@ class PageModel {
     this.secondSectionFields.carYearContextData.setInputFieldType(InputFieldType.Number)
 
     this.secondSectionFields.regionContextData.setDropDownTitle('Местоположение');
-    this.secondSectionFields.regionContextData.setInputData (await this.carAdsService.loadRegionsAsDropDownModel().then());
+    this.carAdsService.loadRegionsAsDropDownModel().then(data =>{
+      this.secondSectionFields.regionContextData.setInputData ( data );
+    });
 
     this.secondSectionFields.euroStandardContextData.setDropDownTitle('Евростандарт');
-    this.secondSectionFields.euroStandardContextData.setInputData (await this.carAdsService.loadEuroStandardsAsDropDownModel().then());
+    this.carAdsService.loadEuroStandardsAsDropDownModel().then(data =>{
+      this.secondSectionFields.euroStandardContextData.setInputData ( data );
+    });
   }
   
   async loadThirdSectionData() : Promise<void> {
@@ -264,7 +308,9 @@ class PageModel {
     this.thirdSectionFields.carPriceContextData.setInputFieldType(InputFieldType.Number)
 
     this.thirdSectionFields.carPriceCurrencyContextData.setDropDownTitle('Валута');
-    this.thirdSectionFields.carPriceCurrencyContextData.setInputData (await this.carAdsService.loadCurrencysAsDropDownModel().then());
+    this.carAdsService.loadCurrencysAsDropDownModel().then(data =>{
+      this.thirdSectionFields.carPriceCurrencyContextData.setInputData (data);
+    });
   
     this.thirdSectionFields.horsePowerContextData.setInputFielTitle('Конски сили');
     this.thirdSectionFields.horsePowerContextData.setInputFieldType(InputFieldType.Number)
@@ -274,10 +320,9 @@ class PageModel {
   }
 
   async loadData(): Promise<void> {
-
-    this.loadFirstSectionData();
-    this.loadSecondSectionData();
-    this.loadThirdSectionData();
+    await this.loadFirstSectionData();
+    await this.loadSecondSectionData();
+    await this.loadThirdSectionData();
   }
 
 }

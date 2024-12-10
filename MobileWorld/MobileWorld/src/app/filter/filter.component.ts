@@ -58,7 +58,7 @@ export class FilterComponent{
 
   async onSelectItem(itemID : string){
     await this.pageModel.carModelsContextData.setInputData (
-       await this.carAdsService.loadCarModelsAsDropDownModel(itemID).then() );
+       await this.carAdsService.loadCarModelsAsDropDownModelByID(itemID).then() );
   } 
 
 }

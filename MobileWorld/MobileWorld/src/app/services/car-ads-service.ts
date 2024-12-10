@@ -84,13 +84,14 @@ export class CarAdsService {
 
     await this.getRecords<AdFullDetailsModel>('cars_ads').then(data =>{
       for (let index = 0; index < data.length; index++) {
+
         const element = data[index];
         const documentData = element as DocumentData;
         adModel.adID = documentData['id'];
-        
-        if(adID === documentData['id']){
+
+        if(adID === documentData['id'] as string ){
           adModel.adID = documentData['id'];
-          adModel = element;
+          adModel= element;
           break;
         }
       }
@@ -336,7 +337,27 @@ export class CarAdsService {
     return carBrandsAsDropDownData;
   }
 
-  async loadCarModelsAsDropDownModel(carBrandID : string) :Promise<DropDownModel[]> {
+  async loadCarModelsAsDropDownModel() :Promise<DropDownModel[]> {
+    
+    let carBrandsAsDropDownData : DropDownModel[] = new Array();
+
+    await this.getRecords<CarModels>('cars_models').then(data =>{
+      data.forEach(item=>{
+        
+        let documentData = item as DocumentData;
+        
+        let dropDownModel : DropDownModel = new DropDownModel();
+        dropDownModel.itemID = documentData['id'];
+        dropDownModel.name = item.modelName;
+
+        carBrandsAsDropDownData.push(dropDownModel);
+      })
+    });
+
+    return carBrandsAsDropDownData;
+  }
+
+  async loadCarModelsAsDropDownModelByID(carBrandID : string) :Promise<DropDownModel[]> {
     
     let carBrandsAsDropDownData : DropDownModel[] = new Array();
 

@@ -3,9 +3,19 @@
     <p class="drop-down-control-header">{{ this.contextData.getDropDownTitle() }}</p>
     @if(!this.contextData.getUseCheckBoxesFlag()){
         <select [disabled]="!this.contextData.getEnableControl()"  (change)="onSelectedItem($event)" class="form-control" tabindex="-1" required>
-            <option value="" disabled selected>Изберете опция</option>
+            
+            @if(this.contextData.getSelectedData()){
+                <option value="" disabled selected>Изберете опция</option>
+            }
+
             @for (item of contextData.getInputData(); track item) {
-                <option id="{{ item.itemID }}">{{ item.name }}</option>
+                
+                @if(this.contextData.getSelectedData() && this.contextData.getSelectedData().itemID === item.itemID){
+                    <option selected id="{{ item.itemID }}">{{ item.name }}</option>
+                }
+                @else{
+                    <option id="{{ item.itemID }}">{{ item.name }}</option>
+                }
             }
         </select>
     }

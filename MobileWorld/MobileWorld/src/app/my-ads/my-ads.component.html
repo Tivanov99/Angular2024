@@ -1,7 +1,27 @@
 <div class="box">
-    @for (adItem of getAds(); track adItem) {
-        <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+
+    @if(!hasAds()){
+        <div class="container text-center">
+            <div class="row">
+                <div class="col align-self-center">
+                    <h3 class="not-available-ads-header"> Нямате добавени обяви </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col align-self-center">
+                    <button (click)="createAd()" routerLink="/my-ads">Създай обява</button>
+                </div>
+            </div>
+        </div>
     }
+    @else{
+        <div class="ads-list">
+            @for (adItem of getAds(); track adItem) {
+                <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+            }
+        </div>
+    }
+
 </div>
 
 <router-outlet></router-outlet>    

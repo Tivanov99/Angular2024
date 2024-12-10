@@ -50,8 +50,6 @@ export class DropDownComponent implements ControlValueAccessor, Validator {
       return null;
     }
     
-    console.log('validatevalidate');
-
     if(this.contextData.getUseCheckBoxesFlag()){
       this._emptySelection = this.contextData.getSelectedDataItems().length == 0;
     }else{

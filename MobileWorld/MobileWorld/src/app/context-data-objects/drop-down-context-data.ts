@@ -1,10 +1,10 @@
 import { DropDownModel } from "../models/drop-down-model";
 
 export class DropDownContextData{
-
-    private _contextDataItem : DropDownModel = new DropDownModel();
-    private _contextDataItems : DropDownModel[] = new Array();
-    private _dropDownItems : DropDownModel[] = [];
+    
+    private _dropDownSelectedItem : DropDownModel = new DropDownModel();
+    private _dropDownSelectedItems : DropDownModel[] = new Array();
+    private _dropDownItemsInputData : DropDownModel[] = [];
     private _useCheckBoxes: boolean = false;
     private _dropDownTitle: string = "";
     private _enableControl : boolean = true;
@@ -30,46 +30,47 @@ export class DropDownContextData{
     }
 
     setInputData(dropDownItems : DropDownModel[]){
-        this._dropDownItems = dropDownItems;
+        this._dropDownItemsInputData = dropDownItems;
     }
 
     getInputData() : DropDownModel[]{
-        return this._dropDownItems;
+        return this._dropDownItemsInputData;
     }
 
     setSelectedData(selectedData : DropDownModel){
-        this._contextDataItem = selectedData;
+        this._dropDownSelectedItem = selectedData;
+    }
 
-        console.log(`selected data IS ${selectedData.name} ${selectedData.itemID}`)
+    setSelectedDataByID(itemID : string){
+        this._dropDownSelectedItem = this._dropDownItemsInputData.find(item => item.itemID === itemID)!;
+        console.log(this._dropDownItemsInputData);
     }
 
     getSelectedData() : DropDownModel{
-        return this._contextDataItem;
+        return this._dropDownSelectedItem;
     }
 
     hasSelectedDataItem() : boolean{
-        return this._contextDataItem.itemID !== "0" || this._contextDataItem.name !== "";
+        return this._dropDownSelectedItem.itemID !== "0" || this._dropDownSelectedItem.name !== "";
     }
 
     addSelectedDataItem(selectedData : DropDownModel){
-        this._contextDataItems.push(selectedData);
-
-        console.log(selectedData);
+        this._dropDownSelectedItems.push(selectedData);
     }
 
     getSelectedDataItems() : DropDownModel[]{
-        return this._contextDataItems;
+        return this._dropDownSelectedItems;
     }
 
     hasSelectedDataItems() : boolean{
-        return this._contextDataItems.length > 0;
+        return this._dropDownSelectedItems.length > 0;
     }
 
     deleteSelectedDataItem(itemID : string) : void{
-        const currentItem : DropDownModel = this._contextDataItems.find(i=>i.itemID === itemID)!;
+        const currentItem : DropDownModel = this._dropDownSelectedItems.find(i=>i.itemID === itemID)!;
        
-        const itemIndex = this._contextDataItems.indexOf(currentItem);
-        this._contextDataItems.splice(itemIndex, 1);
+        const itemIndex = this._dropDownSelectedItems.indexOf(currentItem);
+        this._dropDownSelectedItems.splice(itemIndex, 1);
     }
 
     setEnableControl(enable : boolean){

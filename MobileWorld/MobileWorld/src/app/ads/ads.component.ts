@@ -14,7 +14,7 @@ import { AdShortDetailsModel } from '../models/ad-short-details-model';
 })
 export class AdsComponent implements OnInit {
 
-  public ads : AdShortDetailsModel[] = new Array();
+  private _ads : AdShortDetailsModel[] = new Array();
 
   constructor(private carAdsService : CarAdsService) {
   }
@@ -25,8 +25,10 @@ export class AdsComponent implements OnInit {
   }
 
   async loadData(){
+    this._ads.push(... await this.carAdsService.loadLatetAds());
+  }
 
-    this.ads.push(... await this.carAdsService.loadLatetAds());
-
+  getAds() : AdShortDetailsModel[]{
+    return this._ads;
   }
 }

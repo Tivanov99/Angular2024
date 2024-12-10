@@ -1,7 +1,7 @@
 <div class="box">
 
     <app-filter></app-filter>
-    @for (adItem of ads; track adItem) {
+    @for (adItem of getAds(); track adItem) {
         <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
     }
 
