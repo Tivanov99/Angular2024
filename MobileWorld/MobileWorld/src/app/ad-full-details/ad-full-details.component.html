@@ -13,7 +13,7 @@
             </div>
         }
         <div class="container text-start form-border">
-            <form [formGroup]="createAdForm" (ngSubmit)="handleSubmit()">
+            <form [formGroup]="createAdForm" (ngSubmit)="handleCreate()">
                 <fieldset [disabled]="!enableControls()">
                     <div class="row">
                         <div class="col">
@@ -75,7 +75,7 @@
                 }
                 @else if(isInEditMode()){ 
                     <!-- <input (click) = "onSaveChangesButton()" class="save-changes-button btn btn-success" type="button" value="Запази промените">  -->
-                    <input (click)="handleSubmit()" class="save-changes-button btn btn-success" type="button" value="Запази промените"> 
+                    <input (click)="handleUpdate()" class="save-changes-button btn btn-success" type="button" value="Запази промените"> 
                 }
             </form>
 

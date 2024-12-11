@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { getFirestore,addDoc, collection, getDocs, Firestore, DocumentData } from 'firebase/firestore';
+import { getFirestore,addDoc, collection, doc, getDocs, Firestore, DocumentData, setDoc} from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../environments/environment";
 import { CarBrand } from "../models/car-brands";
@@ -26,6 +26,42 @@ export class CarAdsService {
   constructor() {
     initializeApp(firebaseConfig)
     this.db = getFirestore();
+  }
+
+  async updateAd(updatedAdModel : AdFullDetailsModel) : Promise<Boolean>{
+
+    let successUpdate : boolean = true;
+    const documentPath : string = `cars_ads/${updatedAdModel.adID}`;
+    console.log(updatedAdModel);
+    
+    try{
+      let db : Firestore = getFirestore();
+      const docRef = await setDoc(doc(db, documentPath),{
+        adID : updatedAdModel.adID,
+        carModelID : updatedAdModel.carModelID,
+        carBrandID : updatedAdModel.carBrandID,
+        carGearID : updatedAdModel.carGearID,
+        carFuelTypeID : updatedAdModel.carFuelTypeID,
+        carDistanceID : updatedAdModel.carDistanceID,
+        carYear : updatedAdModel.carYear,
+        regionID : updatedAdModel.regionID,
+        euroStandardID : updatedAdModel.euroStandardID,
+        horsePower : updatedAdModel.horsePower,
+        engineDisplacement : updatedAdModel.engineDisplacement,
+        carPrice : updatedAdModel.carPrice,
+        carPriceCurrencyID : updatedAdModel.carPriceCurrencyID,
+        registerDataTime : updatedAdModel.registerDataTime,
+        customerCreatorID : updatedAdModel.customerCreatorID
+      })
+    }
+    catch (error){
+      successUpdate = false;
+    }
+
+    console.log('successUpdate');
+    console.log(successUpdate);
+    
+    return successUpdate;
   }
 
   async createAd(newCarAd : AdFullDetailsModel) : Promise<Boolean>{

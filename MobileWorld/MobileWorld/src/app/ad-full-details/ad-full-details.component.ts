@@ -121,7 +121,7 @@ export class AdFullDetailsComponent implements OnInit{
     return this._invalidForm;
   }
 
-  async handleSubmit(){
+  private validateFormData() : boolean{
     
     Object.keys(this.createAdForm.controls).forEach((controlName) => {
       const control = this.createAdForm.get(controlName);
@@ -133,45 +133,78 @@ export class AdFullDetailsComponent implements OnInit{
 
     if(!this.createAdForm.valid){
       this._invalidForm = true;
-      return;
+      return false;
     }
+
+    return true;
+  }
+
+  private transferContextDataToModel(destinationModel : AdFullDetailsModel){
+    destinationModel.adID = this._adID;
+    destinationModel.customerCreatorID = this._userService.getCustomerID();
+    destinationModel.carModelID = this.pageModel.firstSectionFields.carModelsContextData.getSelectedData().itemID;
+    destinationModel.carBrandID = this.pageModel.firstSectionFields.carBrandContextData.getSelectedData().itemID;
+    destinationModel.carGearID = this.pageModel.firstSectionFields.carGearTypeContextData.getSelectedData().itemID;
+    destinationModel.carFuelTypeID = this.pageModel.firstSectionFields.carFuelTypeContextData.getSelectedData().itemID;
+
+    destinationModel.carDistanceID = this.pageModel.secondSectionFields.carDistanceContextData.getInputData();
+    destinationModel.carYear = this.pageModel.secondSectionFields.carYearContextData.getInputData();
+    destinationModel.regionID = this.pageModel.secondSectionFields.regionContextData.getSelectedData().itemID;
+
+    destinationModel.euroStandardID = this.pageModel.secondSectionFields.euroStandardContextData.getSelectedData().itemID;
+
+    destinationModel.carPrice = this.pageModel.thirdSectionFields.carPriceContextData.getInputData();
+    destinationModel.carPriceCurrencyID = this.pageModel.thirdSectionFields.carPriceCurrencyContextData.getSelectedData().itemID;
+    destinationModel.horsePower = this.pageModel.thirdSectionFields.horsePowerContextData.getInputData();
+    destinationModel.engineDisplacement = this.pageModel.thirdSectionFields.engineDisplacementContextData.getInputData();
+    
+    destinationModel.registerDataTime = new Date().toLocaleString("bg-BG");
+  }
+
+  async handleCreate(){
+    
+    if(!this.validateFormData())
+      return;
 
     let adFullDetailsModel : AdFullDetailsModel = new AdFullDetailsModel();
 
-    adFullDetailsModel.customerCreatorID = this._userService.getCustomerID();
-    adFullDetailsModel.carModelID = this.pageModel.firstSectionFields.carModelsContextData.getSelectedData().itemID;
-    adFullDetailsModel.carBrandID = this.pageModel.firstSectionFields.carBrandContextData.getSelectedData().itemID;
-    adFullDetailsModel.carGearID = this.pageModel.firstSectionFields.carGearTypeContextData.getSelectedData().itemID;
-    adFullDetailsModel.carFuelTypeID = this.pageModel.firstSectionFields.carFuelTypeContextData.getSelectedData().itemID;
-
-    adFullDetailsModel.carDistanceID = this.pageModel.secondSectionFields.carDistanceContextData.getInputData();
-    adFullDetailsModel.carYear = this.pageModel.secondSectionFields.carYearContextData.getInputData();
-    adFullDetailsModel.regionID = this.pageModel.secondSectionFields.regionContextData.getSelectedData().itemID;
-
-    adFullDetailsModel.euroStandardID = this.pageModel.secondSectionFields.euroStandardContextData.getSelectedData().itemID;
-
-    adFullDetailsModel.carPrice = this.pageModel.thirdSectionFields.carPriceContextData.getInputData();
-    adFullDetailsModel.carPriceCurrencyID = this.pageModel.thirdSectionFields.carPriceCurrencyContextData.getSelectedData().itemID;
-    adFullDetailsModel.horsePower = this.pageModel.thirdSectionFields.horsePowerContextData.getInputData();
-    adFullDetailsModel.engineDisplacement = this.pageModel.thirdSectionFields.engineDisplacementContextData.getInputData();
-    
-    adFullDetailsModel.registerDataTime = new Date().toLocaleString("bg-BG");
+    this.transferContextDataToModel(adFullDetailsModel);
 
     const successCreate : boolean = await this._carAdsService.createAd(adFullDetailsModel).then();
     if(successCreate)
       this._router.navigate([RoutePaths.MyAds]);
+    else
+      this._errorOccurs = true;
+    
+  }
+
+  async handleUpdate(){
+    
+    if(!this.validateFormData())
+      return;
+
+    console.log('handleUpdate');
+    
+    let adFullDetailsModel : AdFullDetailsModel = new AdFullDetailsModel();
+
+    this.transferContextDataToModel(adFullDetailsModel);
+
+    const successUpdate : boolean = await this._carAdsService.updateAd(adFullDetailsModel).then();
+    if(successUpdate)
+      this._router.navigate([RoutePaths.MyAds]);
+    else
+      this._errorOccurs = true;
+    
   }
 
   async onCarBrandSelectItem(itemID : string){
-    console.log('onCarBrandSelectItem');
-    console.log(itemID);
-
     this._carAdsService.loadCarModelsAsDropDownModelByID(itemID).then(data =>{
       this.pageModel.firstSectionFields.carModelsContextData.setInputData(data)
     });
   } 
 
   currentUserAreOwnerOfThisAd() : boolean{
+
     if(!this.isInCreateMode() && this._userService.hasActiveSession()
       && this._userService.getCustomerID() === this._adData.customerCreatorID)
       return true;
