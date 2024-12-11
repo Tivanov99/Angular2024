@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "@angular/fire": "^18.0.1",
-    "@ngrx/store": "^18.1.1",
     "firebase": "^10.14.1"
   }
 }
