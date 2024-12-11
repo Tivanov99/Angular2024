@@ -74,8 +74,13 @@ export class AdFullDetailsComponent implements OnInit{
     return this._errorOccurs;
   }
 
-  onDeleteButton(){
-    
+  async onDeleteButton(){
+    const successDelete : boolean = await this._carAdsService.deleteAd(this._adID).then();
+
+    if(successDelete)
+      this._router.navigate([RoutePaths.MyAds]);
+    else
+      this._errorOccurs = true;
   }
 
   async loadData(){
@@ -183,8 +188,6 @@ export class AdFullDetailsComponent implements OnInit{
     if(!this.validateFormData())
       return;
 
-    console.log('handleUpdate');
-    
     let adFullDetailsModel : AdFullDetailsModel = new AdFullDetailsModel();
 
     this.transferContextDataToModel(adFullDetailsModel);

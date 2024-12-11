@@ -70,11 +70,8 @@
                 @if(isInCreateMode()){
                     <button class="create-ad-button btn btn-primary" type="submit">Създаване на обява</button>
 
-                    <!-- <input class="create-ad-button btn btn-primary" type="button" value="Създаване на обява">  -->
-                    <!-- <input (click) = "onCreateButtonClick()" class="create-ad-button btn btn-primary" type="button" value="Създаване на обява">  -->
                 }
                 @else if(isInEditMode()){ 
-                    <!-- <input (click) = "onSaveChangesButton()" class="save-changes-button btn btn-success" type="button" value="Запази промените">  -->
                     <input (click)="handleUpdate()" class="save-changes-button btn btn-success" type="button" value="Запази промените"> 
                 }
             </form>

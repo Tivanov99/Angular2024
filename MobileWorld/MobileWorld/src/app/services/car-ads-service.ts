@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { getFirestore,addDoc, collection, doc, getDocs, Firestore, DocumentData, setDoc} from 'firebase/firestore';
+import { getFirestore,addDoc, collection, doc, getDocs, Firestore, DocumentData, setDoc, deleteDoc} from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../environments/environment";
 import { CarBrand } from "../models/car-brands";
@@ -28,11 +28,27 @@ export class CarAdsService {
     this.db = getFirestore();
   }
 
+  async deleteAd(adID : string) : Promise<Boolean>{
+
+    const documentPath : string = `cars_ads/${adID}`;
+    let result : boolean = true;
+    console.log(documentPath);
+    
+    try{
+      let db : Firestore = getFirestore();
+      await deleteDoc( doc(db,documentPath));
+    }
+    catch{
+      result = false;
+    }
+
+    return result;
+  }
+
   async updateAd(updatedAdModel : AdFullDetailsModel) : Promise<Boolean>{
 
     let successUpdate : boolean = true;
     const documentPath : string = `cars_ads/${updatedAdModel.adID}`;
-    console.log(updatedAdModel);
     
     try{
       let db : Firestore = getFirestore();
@@ -58,9 +74,6 @@ export class CarAdsService {
       successUpdate = false;
     }
 
-    console.log('successUpdate');
-    console.log(successUpdate);
-    
     return successUpdate;
   }
 
