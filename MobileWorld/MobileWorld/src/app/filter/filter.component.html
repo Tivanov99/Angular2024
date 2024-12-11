@@ -9,22 +9,10 @@
             <app-drop-down [contextData] = "pageModel.carModelsContextData">
             </app-drop-down>
 
-            <!-- <app-drop-down [dropDownTitle] = "'Тип гориво'" [contextData] = "carFuelType">
-            </app-drop-down>
-
-            <app-drop-down [dropDownTitle] = "'Тип скоростна кутия'" [contextData] = "carGearType">
-            </app-drop-down>
-
-            <app-drop-down [dropDownTitle] = "'Екстри'" [contextData] = "extras"
-                        [useCheckBoxes] = "true">
-            </app-drop-down> -->
-
         </div>
         <div class="sidebar-action-units"> 
-            <a routerLink="/ads" (click) = "onSearchButtonClick()" class="filter-search-button" type="button">Покажи колите</a>
-            <!-- <input >  -->
-
-            <!-- <input (click) = "onSearchButtonClick()" class="filter-search-button" type="button" value="Покажи колите">  -->
+            <input type="button" (click) = "onSearchButtonClick()" class="filter-search-button" value="Покажи колите">
+            <!-- <button (click) = "onSearchButtonClick()" class="filter-search-button">Покажи колите</button> -->
             <a href="" class="button">
                 <input type="button" value="Изчисти"> 
             </a>

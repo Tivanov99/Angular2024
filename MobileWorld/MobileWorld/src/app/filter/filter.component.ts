@@ -1,32 +1,24 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { DropDownComponent } from '../drop-down/drop-down.component';
-import { DropDownModel } from '../models/drop-down-model';
 import { DropDownContextData } from '../context-data-objects/drop-down-context-data';
 import { CarAdsService } from '../services/car-ads-service';
 import { SearchFilterModel } from '../models/search-filter-model';
 import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Clear, Search } from './filter-reducer';
 
 @Component({
   selector: 'app-filter',
-  imports: [ DropDownComponent, RouterModule],
+  imports: [ DropDownComponent, RouterModule, ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
   standalone : true
 })
 export class FilterComponent{
 
-  filter$ = new Observable<SearchFilterModel>();
+  @Output() onSearch = new EventEmitter<SearchFilterModel>();
 
   public pageModel! : PageModel;
 
-  // @Output() searchEvent = new EventEmitter<SearchFilterModel>();
-
-  constructor(private carAdsService : CarAdsService,
-    private store: Store<{filter : SearchFilterModel}> ) {
-      this.filter$ = this.store.select('filter');
+  constructor(private carAdsService : CarAdsService ) {
       this.pageModel = new PageModel(this.carAdsService)
   }
 
@@ -39,21 +31,20 @@ export class FilterComponent{
   }
 
   onClearButtonClick(){
-    console.log('чистим');
-    this.store.dispatch(new Clear());
     
   }
 
   onSearchButtonClick(){
 
-    this.store.dispatch(new Search());
-    console.log(this.filter$);
-    // let searchFilterModel : SearchFilterModel = new SearchFilterModel();
-    // searchFilterModel.carBrand = this.pageModel.carBrandContextData.getSelectedData();
-    // searchFilterModel.carsModels = this.pageModel.carModelsContextData.getSelectedDataItems();
+    let searchFilterModel : SearchFilterModel = new SearchFilterModel();
+    searchFilterModel.carBrand = this.pageModel.carBrandContextData.getSelectedData();
+    searchFilterModel.carsModels = this.pageModel.carModelsContextData.getSelectedDataItems();
+    
+    // console.log('onSearchButtonClick');
+    // console.log(searchFilterModel);
 
-    // this.searchEvent.emit(searchFilterModel);
-
+    
+    this.onSearch.emit(searchFilterModel);
   }
 
   async onSelectItem(itemID : string){

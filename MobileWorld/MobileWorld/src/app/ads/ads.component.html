@@ -1,9 +1,18 @@
 <div class="box">
 
-    <app-filter></app-filter>
-    @for (adItem of getAds(); track adItem) {
-        <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+    <app-filter (onSearch)="onSearchButtonClick($event)" ></app-filter>
+
+    @if(hasAds()){
+        @for (adItem of getAds(); track adItem) {
+            <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+        }
     }
+    @else{
+        <div class="container text-center">
+            <h3>Няма намерени обяви!</h3>
+        </div>
+    }
+
 
 </div>
 

@@ -12,6 +12,7 @@ import { EuroStandardModel } from "../models/euro-standard-model";
 import { CurrencyModel } from "../models/currency-model";
 import { AdFullDetailsModel } from "../models/ad-full-details-model";
 import { AdShortDetailsModel } from "../models/ad-short-details-model";
+import { SearchFilterModel } from "../models/search-filter-model";
 
 export enum CarsRequiredDataExpansion{
   FullData,
@@ -127,6 +128,38 @@ export class CarAdsService {
     }
   }
 
+  async loadBySearchCriteria(searchFilterModel : SearchFilterModel){
+
+    let ads : AdShortDetailsModel[] = new Array();
+
+     await this.loadAds().then(data =>{
+      for (let index = 0; index < data.length; index++) {
+
+        const ad = data[index];
+
+        if(ad.carBrandID === searchFilterModel.carBrand.itemID){
+          console.log('carBrandID MATCH');
+          
+          if(searchFilterModel.carsModels.length > 0){
+            for (let models = 0; models < searchFilterModel.carsModels.length; models++) {
+
+              const model = searchFilterModel.carsModels[models];
+              if(model.itemID === ad.carModelID)
+              {
+                ads.push(ad);
+              }
+            }
+          }else{
+            ads.push(ad);
+          }
+        }
+      }
+     });
+    console.log(ads);
+
+     return ads;
+  }
+
   async loadAd(adID : string) : Promise<AdFullDetailsModel> {
 
     let adModel : AdFullDetailsModel = new AdFullDetailsModel();
@@ -149,7 +182,7 @@ export class CarAdsService {
     return adModel;
   }
 
-  private async loadAds(){
+  private async loadAds() : Promise<AdShortDetailsModel[]>{
 
     const fuelTypes : FuelTypeModel[] = await this.loadFuelTypes().then();
     const gearTypes : GearTypeModel[] = await this.loadGearTypes().then();
@@ -170,6 +203,8 @@ export class CarAdsService {
 
         const documentData = adFullDetails as DocumentData;
         
+        adShortDetails.carBrandID = adFullDetails.carBrandID;
+        adShortDetails.carModelID = adFullDetails.carModelID;
         adShortDetails.customerCreatorID = adFullDetails.customerCreatorID;
         adShortDetails.adID = documentData['id'];
         adShortDetails.header = `${carBrand} ${carModel}`;

@@ -3,14 +3,17 @@
         <h4>Най-новите обяви</h4>
     </div>
 
-    <app-filter></app-filter>
+    <app-filter (onSearch)="onSearchButtonClick($event)"></app-filter>
 
-    <!-- <app-filter (searchEvent)="filterSearchButton($event)"></app-filter> -->
-
-    @for (adItem of getLatestAds(); track adItem) {
-        <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+    @if(hasAds()){
+        @for (adItem of getLatestAds(); track adItem) {
+            <ad-short-details [adFullDetailsModel] = "adItem"></ad-short-details>
+        }
+    }
+    @else{
+        <div class="container text-center">
+            <h3>Няма намерени обяви!</h3>
+        </div>
     }
 
 </div>
-<app-counter></app-counter>
-<!-- <router-outlet></router-outlet>     -->

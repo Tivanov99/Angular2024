@@ -1,41 +1,43 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { FilterComponent } from '../filter/filter.component';
 import { AdShortDetailsComponent } from '../ad-short-details/ad-short-details.component';
-import { CounterComponent } from '../counter/counter.component';
 import { AdShortDetailsModel } from '../models/ad-short-details-model';
-import { CarAdsService, CarsRequiredDataExpansion } from '../services/car-ads-service';
+import { CarAdsService } from '../services/car-ads-service';
+import { SearchFilterModel } from '../models/search-filter-model';
 
 @Component({
   selector: 'home',
-  imports: [FilterComponent, AdShortDetailsComponent, CounterComponent],
+  imports: [FilterComponent, AdShortDetailsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   standalone : true
 })
 export class HomeComponent {
 
-  private _latestAds : AdShortDetailsModel[] = new Array();
+  private _latestAds! : AdShortDetailsModel[];
 
   constructor(private _carAdsService : CarAdsService) {
     this.loadData();
   }
 
-  // filterSearchButton(searchFilterModel : SearchFilterModel){
-
-  //   console.log('search emit from patent')
-  //   console.log(searchFilterModel);
-
-  // }
-
   async loadData(){
 
-    this._latestAds.push(...await this._carAdsService.loadLatetAds());
+    this._latestAds = [...await this._carAdsService.loadLatetAds()];
 
   }
 
   getLatestAds() : AdShortDetailsModel[]{
     return this._latestAds;
+  }
+
+  async onSearchButtonClick(searchFilterModel : SearchFilterModel){
+
+    this._latestAds = [...await this._carAdsService.loadBySearchCriteria(searchFilterModel)]
+
+  }
+
+  hasAds() : boolean{
+    return this._latestAds.length > 0;
   }
 
 }
